@@ -5,9 +5,9 @@ import (
 
 	"strconv"
 
-	"gitee.com/sparon/goshop/services"
-	"gitee.com/sparon/goshop/utils"
-	"gitee.com/sparon/goshop/utils/urlpath"
+	"github.com/sparon/goshop/services"
+	"github.com/sparon/goshop/utils"
+	"github.com/sparon/goshop/utils/urlpath"
 )
 
 //ActivityController 活动控制器

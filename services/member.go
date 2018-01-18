@@ -1,7 +1,7 @@
 package services
 
 import (
-	"gitee.com/sparon/goshop/models"
+	"github.com/sparon/goshop/models"
 )
 
 //MemberLoginAccount 获取指定账号的所有可用的登入账号,以及账号类型

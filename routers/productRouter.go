@@ -2,8 +2,8 @@ package routers
 
 import (
 	"github.com/astaxie/beego"
-	"gitee.com/sparon/goshop/controllers"
-	"gitee.com/sparon/goshop/utils/urlpath"
+	"github.com/sparon/goshop/controllers"
+	"github.com/sparon/goshop/utils/urlpath"
 )
 
 func init() {

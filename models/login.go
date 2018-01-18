@@ -9,8 +9,8 @@ import (
 	"github.com/astaxie/beego"
 	"github.com/garyburd/redigo/redis"
 	"github.com/hprose/hprose-go"
-	"gitee.com/sparon/goshop/utils"
-	"gitee.com/sparon/goshop/utils/urlpath"
+	"github.com/sparon/goshop/utils"
+	"github.com/sparon/goshop/utils/urlpath"
 )
 
 //Login 操作数据

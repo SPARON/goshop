@@ -7,10 +7,10 @@ import (
 	"time"
 
 	"github.com/astaxie/beego"
-	"gitee.com/sparon/goshop/models"
-	"gitee.com/sparon/goshop/services"
-	"gitee.com/sparon/goshop/utils"
-	"gitee.com/sparon/goshop/utils/urlpath"
+	"github.com/sparon/goshop/models"
+	"github.com/sparon/goshop/services"
+	"github.com/sparon/goshop/utils"
+	"github.com/sparon/goshop/utils/urlpath"
 )
 
 //LoginController 登入控制器

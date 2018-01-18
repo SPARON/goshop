@@ -7,7 +7,7 @@ import (
 	"strings"
 
 	"github.com/astaxie/beego"
-	"gitee.com/sparon/goshop/models"
+	"github.com/sparon/goshop/models"
 )
 
 //ExecOrder 获取商品信息

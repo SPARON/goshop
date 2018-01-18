@@ -3,8 +3,8 @@ package main
 import (
 	"github.com/astaxie/beego"
 	_ "github.com/astaxie/beego/session/redis"
-	"gitee.com/sparon/goshop/controllers"
-	_ "gitee.com/sparon/goshop/routers"
+	"github.com/sparon/goshop/controllers"
+	_ "github.com/sparon/goshop/routers"
 )
 
 func main() {

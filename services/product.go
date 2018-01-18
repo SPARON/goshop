@@ -1,7 +1,7 @@
 package services
 
 import (
-	"gitee.com/sparon/goshop/models"
+	"github.com/sparon/goshop/models"
 )
 
 //ProductInfo 获取商品信息

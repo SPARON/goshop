@@ -7,7 +7,7 @@ import (
 	"runtime"
 	"testing"
 
-	_ "gitee.com/sparon/goshop/routers"
+	_ "github.com/sparon/goshop/routers"
 
 	"github.com/astaxie/beego"
 	. "github.com/smartystreets/goconvey/convey"

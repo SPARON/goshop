@@ -4,8 +4,8 @@ import (
 	"time"
 
 	"github.com/astaxie/beego/context"
-	"gitee.com/sparon/goshop/models"
-	"gitee.com/sparon/goshop/utils"
+	"github.com/sparon/goshop/models"
+	"github.com/sparon/goshop/utils"
 )
 
 //CheckUser 检测用户是否可用

@@ -3,8 +3,8 @@ package controllers
 import (
 	"strings"
 
-	"gitee.com/sparon/goshop/models"
-	"gitee.com/sparon/goshop/services"
+	"github.com/sparon/goshop/models"
+	"github.com/sparon/goshop/services"
 )
 
 //MemberController 会员控制器

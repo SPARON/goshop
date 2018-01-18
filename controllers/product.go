@@ -6,8 +6,8 @@ import (
 
 	"github.com/astaxie/beego"
 
-	"gitee.com/sparon/goshop/models"
-	"gitee.com/sparon/goshop/services"
+	"github.com/sparon/goshop/models"
+	"github.com/sparon/goshop/services"
 )
 
 //ProductController 会员控制器
