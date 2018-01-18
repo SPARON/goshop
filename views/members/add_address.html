@@ -1,0 +1,94 @@
+{{if result}}
+<input type="radio" name="address" value='{{address_id}}'>
+<div class="inner">
+    <div class="addr-hd" title="{{area_name}} ({{cons.Name}}收)">
+        <span class="prov">{{area_name_array[0]}}</span><span class="city">{{area_name_array[1]}}</span><span>（</span>
+        <span
+            class="name">{{cons.Name}}</span><span> 收）</span>
+    </div>
+    <div title="{{area_name}}{{addr}}" class="addr-bd">
+        <span class="dist">{{area_name}}{{cons.Address}}</span><span class="phone">{{cons.Phone}}</span>
+    </div>
+    <div class="addr-toolbar"><a title="修改地址" href="javascript:void(0);" class="modify">修改</a></div>
+</div>
+<ins class="curmarker"></ins>
+<a href="/member-set_default-{{address_id}}.html" class="setdefault">设为默认</a>
+<ins class="deftip">默认地址</ins> 
+{{else}}
+<table class="fill-shipping">
+    <input type="hidden" name="address_id" value="{{cons.ID}}">
+    <tbody>
+        <tr>
+            <th><em>*</em>收货地区：</th>
+            <td>
+                <span class="region" vtype="area" id="dom_el_953f7b0">
+                    <input name="area" package="mainland" type="hidden" value="{{cons.Area}}" />
+                    <select data-level-index="0" class="x-select"><option value="_NULL_">请选择</option></select>
+                    <select data-level-index="1" class="x-select" style="display:none;"></select>
+                    <select data-level-index="2" class="x-select" style="display:none;"></select>
+                </span>
+                <script>
+                    (function() {
+    //var isDebug = 'js/',
+    var path = '{{url.hosts.resources}}/public/app/ectools/statics/js/';
+var data_path ='/data/misc/';
+var container = $('dom_el_953f7b0');
+var callback = 'selectArea';
+var str = container.getElement('input').value;
+var sels = container.getElements('select');
+// var validate_area;
+var loadRegion = function(region){
+    region.init(container, callback, region_Data);
+    if(str) {
+        str = str.split(':')[1].split('/');
+        str.each(function(s,i){
+            var sel = sels[i];
+            var opt = sel.getChildren().filter(function(el){return el.get('text')==s;});
+            if(sel) region.changeResponse(sel,opt[0]);
+        });
+    }
+};
+try {
+    $LAB.script(data_path + 'region_data.js', path + 'region.js').wait(function(){loadRegion(region_sel);});
+    // validate_area = LANG_formplus['validate']['area'];
+}
+catch(e) {
+    Ex_Loader(data_path + 'region_data.js', path + 'region.js', function(){loadRegion(region_sel);});
+    // validate_area = LANG_Validate['area'];
+}
+})();
+                </script>
+            </td>
+        </tr>
+        <tr class="area">
+            <th><em>*</em>详细地址：</th>
+            <td><textarea type="textarea" name="addr" vtype="required" size="40" data-caution="请填写收货地址" placeholder="建议您如实填写详细收货地址，例如街道名称，门牌号码，楼层和房间号等信息"
+                    id="dom_el_953f7b1">{{cons.Address}}</textarea></td>
+        </tr>
+        <tr>
+            <th>邮编：</th>
+            <td><input class="x-input" type="text" name="zip" id="dom_el_953f7b2" value="{{cons.Zip}}" /></td>
+        </tr>
+        <tr>
+            <th><em>*</em>收货人姓名：</th>
+            <td><input class="x-input" type="text" name="name" id="dom_el_953f7b3" vtype="required" data-caution="请填写收货人姓名" value="{{cons.Name}}"
+                /></td>
+        </tr>
+        <tr>
+            <th>手机：</th>
+            <td><input class="x-input" type="text" name="mobile" id="dom_el_953f7b4" vtype="mobile" data-caution="请填写手机号码或者固定电话"
+                    value="{{cons.Phone}}" /> <span class="caution notice-inline">手机号码和固定电话至少填写一个</span></td>
+        </tr>
+        <tr>
+            <th>固定电话：</th>
+            <td><input class="x-input" type="text" name="tel" id="dom_el_953f7b5" vtype="tel" value="{{cons.Tel}}" /></td>
+        </tr>
+        <tr>
+            <th></th>
+            <td>
+                <a href="javascript:void(0);" class="lnklike {{if cons.ID}}action-save-address{{else}}action-add-address{{/if}}">[保存到常用收货地址]</a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+{{/if}}

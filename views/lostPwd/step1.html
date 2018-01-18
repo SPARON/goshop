@@ -1,0 +1,36 @@
+[#[#forgot_content]#]
+<form id="action" method="post">
+    <input type="hidden" value="" name="forward" />
+    <ul>
+        <li class="form-item">
+            <label class="form-label">账户名：</label><span class="form-act">
+                <input type="text" id="username" placeholder="用户名/手机号码/邮箱地址" name="username" class="x-input" />
+            </span><span class="caution-content"></span>
+        </li>
+        <li class="form-item-normal">
+            <span class="form-act">
+                <button class="btn btn-caution btn-big"><span><span>下一步</span></span></button><span class="forgot-remember">记起密码？<a data-pjax=".informations" href="{{url.hosts.sso}}{{url.login}}?redirectURL={{gotoURL}}" class="goto-signin">登录</a></span>
+            </span>
+        </li>
+    </ul>
+</form>
+<script>
+    $$('.btn-caution').addEvent('click', function (e) {
+        e.stop();
+        var username =  $("username").value.trim();
+        if (username.length < 1) {
+            alert("账号不能为空");
+        } else {
+            new Request({
+                url: "/lostpwd/step2",
+                method: "POST",
+                data: { "account": username },
+                onSuccess: function (data) {
+                    $$(".step-1").removeClass("active");
+                    $$(".step-2").addClass("active");
+                    $$("#forgot_content").set('html',data);
+                }
+            }).send();
+        }
+    });
+</script>

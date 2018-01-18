@@ -1,0 +1,39 @@
+{{if !list || list.length < 1}}
+
+<div class="no-information" style="height:40px;text-align: center;padding-top: 20px">
+    购物车中还没有商品，赶紧选购吧！
+</div>
+
+{{else}}
+
+<ul class="minicart-list clearfix">
+    {{each list as item }}
+    <li class="goods-item clearfix">
+        <div class="goods-pic">
+            <a href="{{url.product}}/{{item.product.PrdouctID}}">
+                <img src="{{url.hosts.resources}}/{{item.product.SImage}}" alt="{{item.product.Name}}" data-img-zoom="true">
+            </a>
+        </div>
+        <div class="goods-info">
+            <h3 class="goods-name">
+                <a href="{{url.product}}/{{item.product.ProductID}}" title="{{item.product.Name}} {{item.product.SpecInfo}}">
+                    {{item.product.Name}} {{item.product.SpecInfo}}
+                </a>
+            </h3>
+            <div class="goods-price">
+                <p>销售价：<span class="p-price">￥{{item.Price.toFixed(2)}}</span></p>
+                <p>
+                    数量：<span class="p-quantity">{{item.Name}}</span><a class="action-delete">移除</a>
+                </p>
+            </div>
+        </div>
+    </li>
+    {{/each}}
+</ul>
+<div class="minicart-info">
+    <p class="total">共 <i>{{list.length}}</i> 件商品<br />合计：<span class="price">￥{{subtotal.toFixed(2)}}</span></p>
+    <p class="submit"> <a href="{{url.hosts.order+url.cart}}" class="btn-tocart">去购物车结算</a> </p>
+</div>
+
+{{/if}}
+

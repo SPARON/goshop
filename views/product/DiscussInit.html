@@ -1,0 +1,126 @@
+<div id="product_comment_init" class="mod" data-sync-type="product_comment_init">
+    <div class="mod-title">
+        <h2>商品评论</h2>
+    </div>
+    <div class="mod-content">
+        <div class="comment-list">
+            <table class="product-score">
+                <tbody>
+                    <tr>
+                        <td class="score-total">
+                            <span class="label">商品评分</span>
+                            <span class="values">
+                                <em class="stars stars-50">
+                                    <span class="below">
+                                        {{#5 | forindex:'<i class="icon star">/</i>'}}
+                                    </span>
+                                    <span class="above">
+                                        {{#5 | forindex:'<i class="icon star">.</i>'}}
+                                    </span>
+                                </em>
+                                <b class="score">3.0</b>
+                                <span class="total"><b class="total-count">1</b>人评分</span>
+                            </span>
+                        </td>
+                        <td>
+                            <ul class="scores-list">
+                                <li class="scores-item">
+                                    <span class="label">综合评分</span>
+                                    <em class="stars stars-50">
+                                        <span class="below">
+                                            {{#5 | forindex:'<i class="icon star">/</i>'}}
+                                        </span>
+                                        <span class="above">
+                                            {{#5 | forindex:'<i class="icon star">.</i>'}}
+                                        </span>
+                                    </em>
+                                    <b class="score">5.0</b>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="title">共<i>{{data.Row}}</i> 个评论。
+                <a onclick="$$('.product-tags .tag-comment').fireEvent('click');window.fireEvent('scroll');location.href='#product_comment';" href="javascript:void(0);">查看全部评论 »</a>
+            </div>
+            <div class="action-content-list">
+                <ul class="content">
+                    {{each data.Data as item}}
+                    <li class="comment-item">
+                        <input type="hidden" value="{{item.comment_id}}" name="id">
+                        <div class="member">
+                            <div class="member-avatar">
+                                <img alt="" src="http://www.hw123.com/public/app/b2c/statics/sprites/default-avatar.png">
+                            </div>
+                            <div class="member-info">
+                                <div class="level"></div>
+                                <div class="username">{{item.author}}</div>
+                            </div>
+                        </div>
+                        <div class="member-discuss">
+                            <div class="point point-left">
+                                <i class="below"></i>
+                                <i class="above"></i>
+                            </div>
+                            <div class="discuss-label">
+                                <span class="stars stars-50">
+                                    <span class="below">
+                                        {{#5 | forindex:'<i class="icon star">/</i>'}}
+                                    </span>
+                                    <span class="above">
+                                        {{#item.goods_point | forindex:'<i class="icon star">.</i>'}}
+                                    </span>
+                                </span>
+                                <span class="time">{{item.time}}</span>
+                            </div>
+                            <p class="discuss-content">{{item.comment}}</p>
+                            <!-- 评论回复列表 -->
+                            <div class="reply-list">
+                                <p class="clearfix reply-action"><i>已有0条回复</i>
+                                    <span class="inter-handle">
+                                        <a href="javascript:void(0);">[回复]</a>
+                                        <em><i class="arrow arrow-top"><i class="above"></i></i></em>
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+                    </li>
+                    {{/each}}
+                </ul>
+            </div>
+        <!--回复-->
+        <div class="post-reply action-post-reply hide">
+            <form class="action-code-form" method="post" action="/comment-toReply.html">
+            <input type="hidden" name="id">
+            <input type="hidden" value="" name="product_id">
+            <ul>
+                <li class="form-item">
+                    <div class="form-act-wide no-permission">
+                        <textarea placeholder="请填写评论内容，最多1000字" data-caution="请填写回复内容，最多1000字" vtype="required" disabled="" rows="10" cols="30" name="comment" class="action-filled-textarea"></textarea>
+                        <div class="mini-mask">请<a href="/passport-login.html">登录</a>后再回复,如果您不是会员请<a href="/passport-signup.html">注册</a>!</div>
+                        <div class="clearfix">
+                            <div class="word-count"><i class="current">0</i>/<i class="word-limit">1000</i></div>
+                            <div class="sub-label"></div>
+                        </div>
+                    </div>
+                </li>
+                <li class="form-item">
+                    <label class="form-label" for="reply_verifycode">验证码：</label>
+                    <span class="form-act">
+                        <input type="text" vtype="required&amp;&amp;alphaint" autocomplete="off" maxlength="4" disabled="disabled" size="4" name="replyverifyCode" id="reply_verifycode" class="x-input verify-input"> <img class="verify-code auto-change-verify-handle hide" title="点击更换验证码" alt="验证码" src="/index-gen_vcode-REPLYVCODE-4.html"> <a class="verify-code auto-change-verify-handle lnklike" href="/index-gen_vcode-REPLYVCODE-4.html">看不清楚?换一个</a>
+                    </span>
+                </li>
+                <li class="form-item form-item-last">
+                    <span class="form-act">
+                        <button disabled="disabled" rel="_request" class="btn btn-simple action-submit-reply" type="submit">
+                            <span><span>提交回复</span></span>
+                        </button>
+                        <a class="btn-close action-close-reply" href="javascript:void(0);">取消回复</a>
+                    </span>
+                </li>
+            </ul>
+            </form>
+        </div>
+    </div>
+</div>

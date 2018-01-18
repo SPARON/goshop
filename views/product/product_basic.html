@@ -1,0 +1,244 @@
+[#[#product_container]#]
+<!-- 标题简介 -->
+<form action="/cart-add-goods.html" method="post" target="_dialog_minicart">
+  <input type="hidden" name="prepare_type" value="">
+  <input type="hidden" name="btype">
+  <input type="hidden" name="goods[goods_id]" value="{{product.GoodsID}}">
+  <input type="hidden" name="goods[product_id]" value="{{product.ProductID}}">
+  <div class="product-side" style="width:602px;">
+    <!-- 商品相册 -->
+    <div id="product_album" class="product-album">
+      <div class="product-album-preview clearfix">
+        <div class="product-album-pic" style="width:600px;height:600px;line-height:598px;*font-size:540px;">
+          <a href="{{url.hosts.resources}}/{{product.LImage}}" class="album-preview-container" id="op_product_zoom">
+            <img src="{{url.hosts.resources}}/{{product.MImage}}" class="small-pic" style="max-width:600px;max-height:600px;">
+          </a>
+        </div>
+        <img class="loading" app="b2c" src="{{url.hosts.resources}}/public/app/b2c/statics/images/loading.gif" alt="正在加载大图..." style="display:none;"/>
+        <div class="product-album-zoom">
+          <a href="/product-albums-{{product.ProductID}}.html" title="点击查看大图" target="_blank" class="icon">&#x4a;</a>
+        </div>
+      </div>
+      <div class="product-album-thumb product-album-thumb-bottom">
+        <div class="flip prev forward over"><a href="javascript:void(0);" class="icon">&#x34;</a></div>
+        <div class="thumbnail-list" style="width:568px;">
+          <ul class="clearfix">
+            {{each product.Goods.Images as item }}
+            <li>
+              <div class="arrow arrow-top"><i class="below"></i></div>
+              <div class="thumbnail">
+                <a rev="{{url.hosts.resources}}/{{item.LImg}}" rel="op_product_zoom" href="{{url.hosts.resources}}/{{item.LImg}}">
+                  <img width="60" height="60" src="{{url.hosts.resources}}/{{item.SImg}}">
+                </a>
+              </div>
+            </li>
+            {{/each}}
+          </ul>
+        </div>
+        <div class="flip next backward over"><a href="javascript:void(0);" class="icon">&#x35;</a></div>
+      </div>
+    </div>
+    <!-- 分享推荐收藏 -->
+    <div class="share-recommend" id="share_recommend">
+      <!-- favarite -->
+      <a href="/passport-login.html" class="btn btn-rounded btn-addfav"><span><span><i class="icon icon-fav">&#x2e;</i><i class="text">收藏</i></span></span></a>
+    </div>
+  </div>
+  <div class="product-main clearfix" style="margin-left:620px;">
+    <!-- 商品基本信息 -->
+    <div class="product-titles">
+      <h2>{{product.Name}}</h2>
+      <p>简介</p>
+    </div>
+    <div id="product_information" class="product-information">
+      <!--商品价格 and 商品评分-->
+      <div class="product-concerns">
+        <ul>
+          <li class="item">
+            <span class="label">销售价：</span>
+            <span class="detail">
+                <b class="price"><ins class="action-price" g-id="{{product.GoodsID}}" p-id="{{product.ProductID}}"></ins></b>
+            </span>
+          </li>
+          <li class="item">
+            <span class="label">商品评分：</span>
+            <span class="detail">
+          <em class="stars stars-50" style="letter-spacing:-2px">
+            <span class="below">
+              {{#5 | forindex:'<i class="icon star">/</i>'}}
+            </span>
+            <span class="above">
+              {{#3 | forindex:'<i class="icon star">.</i>'}}
+            </span>
+            </em>
+            <i>(<a href="javascript:void(0);" onclick="$$('.product-tags .tag-comment').fireEvent('click');location.href='#product_comment';">共1人评论</a>)</i>
+            </span>
+          </li>
+        </ul>
+      </div>
+      <!-- 赠品和促销 -->
+      <div class="product-promotion clearfix auto-switchable" id="product_promotion">
+        <ul class="tabs clearfix switchable-triggerBox">
+          <li class="active"><em>订单促销</em></li>
+        </ul>
+        <!-- <div class="bd"> -->
+        <div class="switchable-panel">
+          <div class="panel-top">
+            <ul>
+              <li><em class="label-alert">免运费</em><span class="name">满37包邮（鱼饵和偏远地区除外）</span></li>
+            </ul>
+          </div>
+        </div>
+        <!-- </div> -->
+      </div>
+      <!--判断是预售商品-->
+
+      <!-- 扩展属性 -->
+      <div class="product-params">
+        <table width="100%">
+          <tbody>
+            <tr>
+              <td class="label">
+                <div class="text-nowrap">货品编号：</div>
+              </td>
+              <td width="45%">{{product.Bn}}</td>
+              <td class="label">品牌：</td>
+              <td width="45%"><a href="/brand-{{product.Goods.ID}}.html">{{product.Goods.Brand.Name}}</a></td>
+            </tr>
+            {{each product.Goods.Prop as item index}}
+              {{if (index+1)%2 == 1}}
+                <tr>
+                <td class="label">
+                  <div class="text-nowrap">{{item.Name}}：</div>
+                </td>
+                <td width="45%">{{item.PropValue}}</td>
+                {{if (index+1) == product.Goods.Prop.length}}
+                  </tr>
+                {{/if}}
+              {{else}}
+                <td class="label">{{item.Name}}：</td>
+                <td width="45%">{{item.PropValue}}</td>
+              </tr>
+              {{/if}}
+            {{/each}}
+          </tbody>
+        </table>
+      </div>
+      <!-- 购买区 -->
+      <div class="product-buy">
+        <!-- 商品规格 -->
+        <div id="product_spec" class="product-spec">
+          <ul class="spec-area">
+            {{each product.Goods.Spec.Specs as item }}
+            <li class="spec-item">
+              <span class="item-label"><i>{{item.Name}}</i>：</span>
+              <span class="item-content">
+                <ul class="clearfix">
+                {{each item.Spec as i }}
+                  <li class="spec-attr {{if i.ProductID == product.ProductID}}selected{{/if}}">
+                    <a href="{{if i.ProductID != product.ProductID}}/product-{{i.ProductID}}.html{{else}}javascript:void(0);{{/if}}" rel="{{i.ProductID}}">
+                    <span>{{i.SpecValue}}</span>
+              <i></i>
+              </a>
+            </li>
+            {{/each}}
+          </ul>
+          </span>
+          </li>
+          {{/each}}
+          </ul>
+        </div>
+        <div class="product-action">
+          <ul>
+            <!--商品库存-->
+            <li class="product-buy-quantity">
+              <label class="item-label" for="for_quantity_input">数量：</label>
+              <span class="item-content" style="letter-spacing:-4px">
+                <span class="p-quantity">
+                  <a href="javascript:void(0);" class="btn-decrease">-</a>
+                  <input type="text" name="goods[num]" id="for_quantity_input" class="action-quantity-input" value="1" min="1" max="">
+                  <a href="javascript:void(0);" class="btn-increase">+</a></span> {{product.Goods.Unit}}
+              <span
+                class="p-store"></span>
+                <input type="hidden" name="stock" value="">
+                </span>
+            </li>
+            <!--购买按钮-->
+            <li class="product-buy-action">
+              <button type="submit" class="btn btn-import btn-huge action-buynow" rel="_request"><span><span>立即购买</span></span></button>
+              <!--判断是否是预售商品和预售商品的时间判断-->
+              <button type="submit" class="btn btn-major btn-huge action-addtocart cartpng" rel="_request"><span><span>加入购物车</span></span></button>
+              <button type="button" class="btn btn-caution btn-huge action-notify hide"><span><span>到货通知</span></span></button>
+            </li>
+            <!--判断是预售商品-->
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
+<img src="/product-cron-{{product.GoodsID}}.html" width="1" border="none" height="1">
+
+<div id="product_notify" class="product-notify" style="display:none;">
+  <p class="desc">该货品暂时缺货，请在下面输入您的邮箱地址或手机号码，当我们有现货供应时，我们会发送邮件通知您！</p>
+  <form class="form" method="post" action="/product-toNotify.html">
+    <input type="hidden" name="item[0][goods_id]" value="{{product.GoodsID}}">
+    <input type="hidden" name="item[0][product_id]" value="{{product.ProductID}}">
+    <ul>
+      <li class="form-item">
+        <label for="" class="form-label">邮箱地址：</label>
+        <span class="form-act">
+          <input class="x-input" type="text" name="email" id="dom_el_3a76b60" size="30" vtype="required&&email" /></span>
+      </li>
+      <li class="form-item">
+        <label for="" class="form-label">手机号码：</label>
+        <span class="form-act">
+          <input class="x-input" type="text" name="cellphone" id="dom_el_3a76b61" size="30" vtype="required"/> 
+        </span>
+      </li>
+      <li class="form-item form-item-last">
+        <label for="" class="form-label"></label>
+        <span class="form-act">
+          <button type="submit" class="btn btn-caution" rel="_request"><span><span>提交</span></span></button>
+        </span>
+      </li>
+    </ul>
+  </form>
+</div>
+
+<!--废弃-->
+<div class="y-pm-right">
+  <div class="hd">
+    <s></s>
+    <span>忍不住要看</span>
+  </div>
+  <ul>
+    <li>
+      <div class="img">
+        <a href="/gallery-28.html"><img src="/themes/lcfgly/images/image/index3/goods/yg-list.jpg"></a>
+        <p class="title">抛竿引鱼</p>
+      </div>
+    </li>
+    <li>
+      <div class="img">
+        <a href="/gallery-41.html"><img src="/themes/lcfgly/images/image/index3/goods/ygou-list
+.jpg"></a>
+        <p class="title">寻找钩不住的鱼</p>
+      </div>
+    </li>
+    <li>
+      <div class="img">
+        <a href="/gallery-52.html"><img src="/themes/lcfgly/images/image/index3/goods/yuer-list
+.jpg"></a>
+        <p class="title">钩尖上的美食</p>
+      </div>
+    </li>
+    <li>
+      <div class="img">
+        <a href="/gallery-48.html"><img src="/themes/lcfgly/images/image/index3/goods/yx-list.jpg"></a>
+        <p class="title">放好线钓大鱼</p>
+      </div>
+    </li>
+  </ul>
+</div>

@@ -1,0 +1,22 @@
+<div class="mod">
+  <div class="mod-title"><h2>相关商品</h2></div>
+  <div class="mod-content">
+    <div class="product-related-content">
+      <ul class="clearfix">
+          {{each data as item}}
+          <li class="goods-item">
+            <div class="goods-pic">
+                <a href="{{url.product}}/{{item.product_id}}">
+                    <img src="{{url.hosts.resources}}/{{item.s_url}}" alt="{{item.name}}">
+                </a>
+            </div>
+            <div class="goods-info">
+                <h3 class="goods-name"><a href="{{url.product}}/{{item.product_id}}">{{item.name}}</a></h3>
+                <p>销售价：<span class="price">{{item.price.toFixed(2)}}</span></p>
+            </div>
+          </li>
+          {{/each}}
+      </ul>
+    </div>
+  </div>
+</div>

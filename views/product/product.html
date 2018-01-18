@@ -1,0 +1,753 @@
+[#[#bodymain]#]
+<style>
+    .bg {
+        background-color: white !important
+    }
+</style>
+    <div class="bread-crumbs">
+        您当前的位置： <span><a title="" alt="" href="{{url.hosts.main}}">首页</a></span>
+        <span>&gt;</span> {{#catPath}}
+        <span class="now">{{product.Goods.Name}}</span>
+    </div>
+    <div class="space">
+        <div class="clearfix" id="main">
+            <!-- 商品详情 -->
+            <div class="page-maincontent ">
+                <div class="product-container clearfix" id="product_container"></div>
+                <!-- 配件套餐 -->
+                <div class="y-ps clearfix" id="product_section">
+                    <div style="display:none; float:left; width:200px;" class="y-ps-left">
+                        <!--客服区-->
+                        <div style="display:none" class="y-kf">
+                            <div class="y-wel">
+                                <h2>客服中心</h2><i></i>
+                                <div data-widget-type="Tabs" class="platform auto-bind-widget" id="platform">
+                                    <ul class="switchable-content">
+                                        <li><img src="/themes/lcfgly/images/image/qrcode.jpg">
+                                            <p>我看你骨骼惊奇,跟我学钓鱼吧~</p>
+                                        </li>
+                                        <li style="display:none"><img src="/public/images/ec/e9/06/120797073773999e4019175b6b26e1156ab6785f.jpg?1427096437#h">
+                                            <p>官方信息发布渠道</p>
+                                        </li>
+                                    </ul>
+                                    <h1>---扫码/点击 关注我们---</h1>
+                                    <ul class="switchable-triggerBox clearfix">
+                                        <li class="active"><a class="qq" target="_blank" href="http://shang.qq.com/wpa/qunwpa?idkey=7ed8b55bbdd57bcedb3d4825e89373d71b2b05427f2e9965f332f24f07b4159e">Q群钓友平台</a></li>
+                                        <li><a class="we" target="_blank" href="/article-weixinhistory-76.html">微信公众平台</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <ul>
+                                <li class="service-content">
+                                    <div class="service-contentL">工作时间</div>
+                                    <div class="service-contentM">
+                                        <p>周一至周日:7:20-22:30</p>
+                                    </div>
+                                </li>
+                                <li class="service-content">
+                                    <div class="service-contentL">客服Q<br>Q</div>
+                                    <div class="service-contentM">
+                                        <!-- <span>客服洪洪:</span><a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=2851150366&site=qq&menu=yes"><img border="0" src="http://wpa.qq.com/pa?p=2:2851150367:52" alt="点击这里给我发消息" title="点击这里给我发消息"/></a>
+                                            <span>客服小饶:</span><a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=1747534419&site=qq&menu=yes"><img border="0" src="http://wpa.qq.com/pa?p=2:1747534419:52" alt="点击这里给我发消息" title="点击这里给我发消息"/></a> -->
+                                        <a href="javascript:;;" onclick="$$('.qiao-icon-head')[0].click()">在线客服</a>
+                                        <a style="display:block;margin-top:4px;" target="_blank" href="http://shang.qq.com/wpa/qunwpa?idkey=7ed8b55bbdd57bcedb3d4825e89373d71b2b05427f2e9965f332f24f07b4159e"><img src="/themes/lcfgly/images/image/index3/qun.png"></a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div data-widget-type="Switchable" class="product-related" id="product_related">
+                        </div>
+                    </div>
+                    <div class="y-ps-main">
+                        <div class="product-tags clearfix">
+                            <h2 class="tags-hd active"><a href="#detail">商品详情</a></h2>
+                            <h2 class="tags-hd tag-comment"><a href="#recomment">商品评论</a></h2>
+                            <h2 class="tags-hd tag-consult"><a href="#consult">商品咨询</a></h2>
+                            <h2 class="tags-hd"><a href="#saleslog">销售记录</a></h2></div>
+                        <div class="tags-hd-bg"></div>
+                        <div class="tags-hd-hg"></div>
+                        <div class="product-section product-detail" id="product_detail">
+
+                            <div class="product-attributes">
+                                <ul class="clearfix">
+                                    <li>品牌：<a href="/brand-{{product.Goods.Brand.ID}}.html">{{product.Goods.Brand.Name}}</a></li>
+                                    <li>所属分类：{{cat.Name}}</li>
+                                    {{each product.Goods.Prop as value}}
+                                        <li>{{value.Name}}：{{value.PropValue}}</li>
+                                    {{/each}}
+                                </ul>
+                            </div>
+                            <div class="detail-content">
+                                {{#product.Goods.Intro}}
+                            </div>
+
+                            <div data-sync-type="product_comment_init" class="product-comment " id="product_comment_init"></div>
+                            <div data-sync-type="product_consult_init" class="product-consult " id="product_consult_init">
+                                <div class="mod">
+                                    <div class="mod-title">
+                                        <h2>商品咨询</h2></div>
+                                    <div class="consult-title">
+                                        <button onclick="$$('.product-tags .tag-consult').fireEvent('click');window.fireEvent('scroll');location.href='#post_consult';"
+                                            class="btn btn-simple" type="button"><span><span>我要咨询</span></span></button>                                        <em></em>
+                                    </div>
+                                    <div id="consult_content_init" class="consult-content">
+                                        <!---->
+
+                                        <ul class="tabs clearfix switchable-triggerBox">
+                                            <li class="active"><a href="/comment-ajax_type_ask-531.html" class="action-consult-trigger">全部咨询(0)</a></li>
+                                            <li><a href="/comment-ajax_type_ask-531-1.html" class="action-consult-trigger">商品咨询(0)</a></li>
+                                            <li><a href="/comment-ajax_type_ask-531-2.html" class="action-consult-trigger">配送咨询(0)</a></li>
+                                            <li><a href="/comment-ajax_type_ask-531-3.html" class="action-consult-trigger">售后咨询(0)</a></li>
+                                        </ul>
+
+                                        <div class="action-content-list switchable-panel">
+                                            <div class="no-message">如果您对本商品有什么问题,请提问咨询!</div>
+                                            <ul class="consult-list">
+                                            </ul>
+
+                                        </div>
+                                        <div style="display:none;" class="action-content-list switchable-panel">
+                                        </div>
+                                        <div style="display:none;" class="action-content-list switchable-panel">
+                                        </div>
+                                        <div style="display:none;" class="action-content-list switchable-panel">
+                                        </div>
+
+
+                                    </div>
+
+                                    <!-- 咨询回复/评论回复 -->
+                                    <div class="post-answer action-post-reply hide">
+                                        <form class="action-code-form" method="post" action="/comment-toReply.html">
+                                            <input type="hidden" name="id">
+                                            <ul>
+                                                <li class="form-item">
+                                                    <div class="form-act-wide">
+                                                        <textarea placeholder="欢迎发表回复，最多1000字。" data-caution="请填写回复内容，最多1000字" vtype="required" rows="10" cols="30" id="" name="comment"
+                                                            class="action-filled-textarea"></textarea>
+                                                        <div class="clearfix">
+                                                            <div class="word-count"><i class="current">0</i>/<i class="word-limit">1000</i></div>
+                                                            <div class="sub-label"></div>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li class="form-item">
+                                                    <label class="form-label" for="">联系方式：</label><span class="form-act"><input type="text" id="" name="contact" vtype="required"> <span class="sub-label">可以是电话、email、qq等</span></span>
+                                                </li>
+                                                <li class="form-item">
+                                                    <label class="form-label" for="answer_verifycode">验证码：</label>
+                                                    <span class="form-act">
+        <input type="text" vtype="required&amp;&amp;alphaint" autocomplete="off" maxlength="4" size="4" name="replyverifyCode" id="anwser_verifycode" class="x-input verify-input"> <img class="verify-code auto-change-verify-handle hide" title="点击更换验证码" alt="验证码" src="/index-gen_vcode-REPLYVCODE-4.html"> <a class="verify-code auto-change-verify-handle lnklike" href="/index-gen_vcode-REPLYVCODE-4.html">看不清楚?换一个</a>      </span>
+                                                </li>
+                                                <li class="form-item">
+                                                    <span class="form-act"><button rel="_request" class="btn btn-simple action-submit-reply" type="submit"><span><span>提交回复</span></span>
+                                                    </button><a class="btn-close action-close-reply" href="">取消回复</a></span>
+                                                </li>
+                                            </ul>
+                                        </form>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div style="display:none;" data-sync-type="product_comment" class="product-section product-comment" id="product_comment">
+
+                        </div>
+                        <div style="display:none;" data-sync-type="product_consult" class="product-section product-consult" id="product_consult">
+
+                        </div>
+                        <div style="display:none;" data-sync-type="product_saleslog" class="product-section product-saleslog action-content-list"
+                            id="product_saleslog">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            var main = $('main');
+            var container = $('product_container');
+            var section = $('product_section');
+            var pID = {{product.ProductID}};
+            var gID = {{product.GoodsID}}
+            priceControl.spec = {"decimals":"2","dec_point":".","thousands_sep":"","fonttend_decimal_type":"0","fonttend_decimal_remain":"2","sign":"\uffe5"};
+            //请求库存和价格
+            var Router = {
+                price: function(id){
+                    return '{{url.product_price}}?product_id='+id;
+                },
+                stock: function(id) {
+                    return '{{url.product_store}}?product_id='+id;
+                },
+                basic: function(id) {
+                    return '/product/basic/ajax/'+id+'';
+                }
+            };
+            var Query = function(url, options) {
+                var self = this;
+                this.send = function(url, options) {
+                    options = Object.merge({
+                        url: url,
+                        method: 'post',
+                        link: 'chain'
+                    }, options || {});
+                    return new Request(options).send();
+                };
+                this.update = function (url, update, options) {
+                    options = Object.merge({
+                        url: url,
+                        update: update,
+                        method: 'post',
+                        link: 'chain'
+                    }, options || {});
+                    new Request.HTML(options).send();
+                };
+                this.price = function(options) {
+                    options = Object.merge({
+                        method: 'get',
+                        onSuccess:function(rs) {
+                            rs = JSON.decode(rs);
+
+                            if(rs && Object.getLength(rs)) {
+                                if(rs.error) {
+                                    return Message.error(rs.error);
+                                }
+                                                    Object.each(rs, function(v, k) {
+                                    if(typeOf(v) === 'array') {
+                                        var s = '';
+                                        v.each(function(vi){
+                                            s += '<li>' + vi.name + '：' + priceControl.format(vi.price) + '</li>';
+                                        });
+                                        v = '<ul>' + s + '</ul>';
+                                    }
+                                    else {
+                                        v = priceControl.format(v);
+                                    }
+                                    var el = main.getElement('.action-' + k);
+                                    if(el) {
+                                        if(!v) el.getParent().hide();
+                                        else el.set('html', v);
+                                    }
+                                });
+                            }
+                        }
+                    }, options || {});
+                    var url = Router.price(options.id);
+                    this.send.delay(0, this, [url, options]);
+                };
+                this.stock = function(options) {
+                    if(!container.getElement('.product-buy-quantity')) return;
+                    options = Object.merge({
+                        method: 'get',
+                        onSuccess:function(rs) {
+                            rs = JSON.decode(rs);
+                            if(rs && Object.getLength(rs)) {
+                                if(rs.error) {
+                                    return Message.error(rs.error);
+                                }
+                                var tpl = '<span class="p-quantity"><a href="javascript:void(0);" class="btn-decrease">-</a><input type="text" name="goods[num]" class="action-quantity-input" value="1" min="1" max="{store}"><a href="javascript:void(0);" class="btn-increase">+</a></span> 支<span class="p-store">{title}</span><input type="hidden" name="stock" value="{store}">';
+                                container.getElement('.product-buy-quantity .item-content').innerHTML = tpl.substitute(rs);
+                                if(!rs.store) {
+                                    container.getElement('.action-quantity-input').disabled = true;
+                                    container.getElement('.product-buy-quantity').addClass('hide');
+                                    container.getElements('.action-buynow, .action-addtocart').addClass('hide');
+                                    container.getElement('.action-notify').removeClass('hide');
+                                                        }
+                                else {
+                                                        }
+                                if(!rs.title) {
+                                    container.getElements('.p-store').addClass('hide');
+                                }
+                            }
+                        }
+                    }, options || {});
+                    var url = Router.stock(options.id);
+                    this.send.delay(300, this, [url, options]);
+                };
+            };
+            Query = new Query;
+            attachAction('{{product.ProductID}}');
+            bindQuantityEvent(container,setQuantity);
+            //== 为数量选择框绑定事件
+            function bindQuantityEvent(elements, callback) {
+                elements = document.id(elements) || $$(elements);
+                if(!elements && !elements.length) return;
+                var value = '';
+                elements.addEvents({
+                    //= 数量按钮
+                    'click:relay(.btn-decrease,.btn-increase)': function(e) {
+                        var input = this.getParent().getElement('.action-quantity-input');
+                        value = +input.value;
+                        input.value = this.hasClass('btn-decrease') ? value - 1 : value + 1;
+                        callback && callback(input, value);
+                    },
+                    //= 数量输入框
+                    'focus:relay(.action-quantity-input)': function(e){
+                        value = +this.value;
+                    },
+                    'change:relay(.action-quantity-input)': function(e) {
+                        callback && callback(this, value);
+                    }
+                });
+            }
+            //== 获取商品数量值
+            function getQuantity(el, type) {
+                return el.getElement('input[name=' + type + ']').value;
+            }
+            //== 设置商品数量
+            function setQuantity(input, value) {
+                var type = 'product';
+                var p = input.getParent('li');
+                inputCheck(input, {min: input.get('min'), max: input.get('max'), 'default': value, store: getQuantity(p, 'stock'), callback: window.quantityCallback});
+            }
+            //== 商品数量输入框正确性检测
+            function inputCheck(input, options) {
+                if(!input) return false;
+                options = options || {};
+                if(isNaN(options.min)) options.min = 1;
+                if(isNaN(options.max)) options.max = 999999;
+                options['default'] = options['default'] || options.min;
+                var value = +input.value;
+                var tips = new Tips(input);
+                var pre = '';
+                var msg = '';
+                if(options.store && options.store - value <= 0) {
+                    pre = '库存有限，';
+                }
+                if(value < options.min) {
+                    input.value = options.min;
+                    msg = '此商品的最小购买数量为' + options.min + '件';
+                }
+                else if(value > options.max){
+                    input.value = options.max;
+                    msg = pre + '此商品最多只能购买' + options.max + '件';
+                }
+                else if(isNaN(value)) {
+                    input.value = options['default'];
+                    msg = '只允许输入数字';
+                }
+                if (msg) {
+                    tips.show(msg);
+                    return false;
+                }
+                tips.hide();
+                if(options.callback) options.callback(input, options['default']);
+                return true;
+            }
+
+            //== 商品详情图片延迟加载，并缩放到合适大小
+            var sectionWidth = section.getStyle('width').toInt();
+            new DataLazyLoad({
+                containers: section,
+                textarea:'action-lazyload',
+                onCallback:function(){
+                    section.getElements('img').each(function(img){
+                        img.zoomImg(sectionWidth);
+                    });
+                }
+            });
+            //== 异步加载商品详情tab
+            var param = {
+                    goodsDiscussInit:{
+                        update:section,name:'product_comment_init', 
+                        onSuccess: function(){
+                            storeAjaxConfig('product_comment_init','.action-submit-reply', '.reply-list');
+                        }
+                    },
+                    goodsConsultInit:{
+                        update:section,name:'product_consult_init', 
+                        onSuccess: function(){
+                            storeAjaxConfig('product_consult_init','.action-submit-reply', '.answer-list');
+                        }
+                    },
+                    goodsDiscuss:{
+                        append:section,name:'product_comment',
+                        require:'product_comment_init', 
+                        onSuccess: function(){
+                            storeAjaxConfig('product_comment','.action-submit-reply', '.reply-list');
+                        }
+                    },
+                    goodsConsult:{
+                        append:section,name:'product_consult',
+                        require:'product_comment', 
+                        onSuccess: function(){
+                            storeAjaxConfig('product_consult','.action-submit-reply', '.answer-list');
+                            storeAjaxConfig('product_consult','.action-submit-post', 'consult_content', true);
+                        }
+                    },
+                    goodsSellLoglist:{
+                        append:section,name:'product_saleslog',
+                        require:'product_consult'
+                    },
+                    //goodsLink:{append:section,name:'product_related',require:'product_consult'}
+            },queue_items = [];
+            Object.each(param,function(v,k){
+                queue_items.push(Object.append({
+                    url:'/'+k+'?goods='+gID
+                },v));
+            });
+            $('product_related').load('{{url.goodslink}}?goods='+gID+'&cat={{cat.ID}}');
+            var lazyload = new LayoutRequest(queue_items);
+            //== 为商品详情生成tab
+            section.getElements('.tags-hd').inject(new Element('.product-tags.clearfix').inject($$('.y-ps-main')[0],'top'));
+            new Tabs('main', {
+                eventType: 'click',
+                triggersBox: '.product-tags',
+                panels: '.product-section',
+                onSwitch: function(e){
+                    queue_items.each(function(q){
+                        if(q.name === this.panels[e.currentIndex].id) {
+                            lazyload.request.call(lazyload, q);
+                        }
+                    }, this);
+                    if(window.getScrollTop()>=950)
+                        new Fx.Scroll(window).set(0, $('product_section').getTop());
+                }
+            });
+            //== 处理评论咨询回复异步请求
+            function storeAjaxConfig(cont,handle, area, type){
+                // $(cont).getElements(trigger).each(function(handle){
+                    var update;
+                    var element = $(cont).getElement(handle);
+                    element.retrieve('_ajax_config') || element.store('_ajax_config', {
+                        onSuccess:function(rs) {
+                            rs = rs[0];
+                            if(rs&&rs.success&&rs.data){
+                                update = $(area);
+                                if(!update) {
+                                    var active = element.getParent('.mod').getElement('.active-handle');
+                                    update = active.getParent(area);
+                                    closeReply(element);
+                                }
+                                rs.html = rs.data.stripScripts(function(script){
+                                    rs.javascript = script;
+                                });
+                                update.set('html', rs.html);
+                                Browser.exec(rs.javascript);
+
+                                Message.success(rs.success);
+
+                                if(type) location.href = '#' + cont;
+                                resetForm(element.getParent('form'));
+                                storeAjaxConfig(cont,handle, area, type);
+                            }
+                        }
+                    });
+                // });
+            }
+            //== 重置提交表单
+            function resetForm(form) {
+                form.reset();
+                form.blur();
+                try{
+                    form.getElement('img.verify-code').addClass('hide');
+                }catch(e){
+                }
+            }
+            //== 处理商品基本信息交互
+            function attachAction(id) {
+                //== 价格和库存异步加载
+                Query.price({id: id});
+                Query.stock({id: id});
+                    //== 商品相册图放大镜
+                window.addEvent('domready', function(){
+                    new AlbumZoom(container, {
+                            zoomsSize:{
+                                x:400,
+                                y:300
+                            }
+                        });
+                        });
+            }
+            var ajax;
+            var state;
+            container.addEvents({
+                'click:relay(.action-slidedown)': function(e){
+                    var panel = this.getParent('.switchable-panel');
+                    var top = panel.getElement('.panel-top');
+                    var cont = this.getParent('.product-promotion');
+                    if(!panel.hasClass('unfold')) {
+                        top && top.setStyle('height', 'auto');
+                        panel.addClass('unfold');
+                    }
+                    else {
+                        top && top.setStyle('height', 82);
+                        panel.removeClass('unfold');
+                    }
+                    toggleText(this.getElement('.icon'));
+                    toggleText(this.getElement('.text'));
+                },
+                'mouseenter:relay(.action-handle)': function(e){
+                    var menu = this.getNext('.pop-body');
+                    if(menu) {
+                        clearTimeout(menu.timer);
+                        this.addClass('active');
+                        menu.show();
+                    }
+                },
+                'mouseenter:relay(.pop-body)': function(e){
+                    clearTimeout(this.timer);
+                },
+                'mouseleave:relay(.pop-wrapper)': function(e) {
+                    var menu = this.getElement('.pop-body');
+                    menu.timer = (function(){
+                        this.getElement('.active').removeClass('active');
+                        menu.hide();
+                    }).delay(200,this);
+                },
+                'click:relay(.pop-close)': function(e) {
+                    this.getParent('.pop-body').hide();
+                },
+                'click:relay(.action-buynow)': function(e) {
+                    var form = this.getParent('form');
+                    form.getElement('input[name=btype]').value = 'is_fastbuy';
+                    form.store('target', form.target).target = '';
+                        },
+                'click:relay(.action-addtocart)': function () {
+                    var form = this.getParent('form');
+                    var target = form.retrieve('target');
+                    form.getElement('input[name=btype]').value = '';
+                    if(target) form.target = target;
+                },
+                'click:relay(.action-notify)': function(e) {
+                    var dialog = new Dialog($('product_notify').wrapped(), {
+                        title:'到货通知',
+                        width: 400,
+                        modal: {
+                            'class': 'cover'
+                        },
+                        onLoad: function(){
+                            var content = this.content;
+                            content.getElement('[rel=_request]').store('_ajax_config',{onSuccess:function(rs){
+                                    if(rs && rs[0]) {
+                                        if(rs[0]['true']) {
+                                            content.getElement('.product-notify').innerHTML = '<div class="success"><i class="icon">&#x25;</i>联系方式已经成功提交，到货后会立刻通知您。</div>';
+                                            dialog.hide.delay(3000, dialog);
+                                        }
+                                    }
+                                }
+                            });
+                        }
+                    });
+                },
+                'click:relay(.spec-attr)': function(e){
+                    if(this.hasClass('selected')) return;
+                    var a = this.getElement('a');
+                    var url = a.href;
+                    var id = a.rel;
+                    if(!id) return;
+                    if (window.history && history.pushState) {
+                        e.stop();
+                        /*html5 history manage*/
+                        if(ajax){
+                            ajax.cancel();
+                        }
+                        else {
+                            state = {title: document.title, html: container.innerHTML, url: location.href, id: id};
+                        }
+                        ajax = Query.send(Router.basic(id), {
+                            method: 'post',
+                            onSuccess: function(rs) {
+                                try{
+                                    rs = JSON.decode(rs);
+                                    if(rs.error) {
+                                        return Message.error(rs.error);
+                                    }
+                                }catch(e) {
+                                    updateBasic(rs, id, url);
+                                }
+                            }
+                        });
+                    }
+                },
+                'click:relay(.invite-frcost)':function(e){
+                    e.preventDefault();
+                    var url=this.href;
+                    new Request.JSON({
+                        url:url,
+                        onSuccess:function(rs){
+                            if(rs.error) Dialog.alert(rs.msg,{title:'友情提示'})
+                            if(rs.succ){
+                                Dialog.confirm(rs.msg,function(e){
+                                if(e){
+                                        new Request.JSON({
+                                            url:url,
+                                            data:'confirm=true',
+                                            onSuccess:function(rs){
+                                            if(rs.succ) Dialog.alert(rs.msg,{title:'友情提示'})
+                                            }
+                                        }).send();
+                                }
+                                })
+                            }
+                        }
+                    }).send();
+                }
+            });
+            if ('onpopstate' in window) {
+                window.onpopstate = function(event){
+                    if(ajax == null) return;
+                    var data;
+                    if(event && event.state){
+                        data = event.state;
+                    }else{
+                        data = state;
+                    }
+                    document.title = data.title;
+                    updateBasic(data.html, data.id);
+                }
+            }
+            function updateBasic(rs, id, url) {
+                container.innerHTML = rs;
+                attachAction(id);
+                url && history.pushState({url: url, title: document.title, html: rs, id:id}, document.title, url);
+                //迷你购物车
+                formToCart();
+            }
+            $(document.body).addEvents({
+                'click:relay(.btn-caution)': function(e) {
+                    if(this.hasClass('disabled')) return;
+                    var data = this.getParent('.form');
+                    if(!validate(data, 'all')) {
+                        e.stop();
+                        return;
+                    }
+                },
+                'click:relay(.inter-handle)': function(e) {
+                    e.preventDefault();
+                    var parent = this.getParent('.mod');
+                    var item = this.getParent('.comment-item') || this.getParent('.consult-item');
+                    var action = this.getParent('.reply-action') || this.getParent('.answer-action');
+                    var active = action.hasClass('active-handle');
+                    var reply = parent.getElement('.action-post-reply');
+                    var toggle = parent.getElement('.active-handle');
+                    if(toggle) {
+                        closeReply(toggle);
+                    }
+                    var id = item.getElement('input[name=id]').value;
+                    reply.getElement('input[name=id]').value = id;
+                    reply.removeClass('hide').setStyles({
+                        width: action.getSize().x - reply.getPatch('padding','border').x
+                    }).position({
+                        target:this,
+                        from: 'rt',
+                        to: 'rb',
+                        offset:{
+                            y: 8
+                        },
+                        intoView: true
+                    });
+                    if(active){
+                        closeReply(this);
+                        // reply.addClass('hide');
+                    }
+                    else{
+                        openReply(this);
+                    }
+
+                    /*var parent = this.getParent('.comment-list') || this.getParent('.consult-content');
+                    var item = this.getParent('.comment-item') || this.getParent('.consult-item');
+                    var cont = item.getElement('.action-post-reply') || this.getParent('.mod').getElement('.action-post-reply').inject(this.getParent(), 'after');
+                    var act = this.hasClass('active-handle');
+                    var id = item.getElement('input[name=id]').value;
+                    parent.getElement('.active-handle') && parent.getElement('.active-handle').removeClass('active-handle');
+                    cont.getElement('input[name=id]').value = id;
+                    if(act) {
+                        cont.addClass('hide');
+                    }else {
+                        this.addClass('active-handle');
+                        cont.removeClass('hide');
+                    }*/
+                },
+                'click:relay(.action-close-reply)': function(e) {
+                    e && e.preventDefault();
+                    closeReply(this);
+                },
+                'focus:relay(.action-code-form)': function(e) {
+                    var code = this.getElement('img.verify-code');
+                    if(code && !code.isVisible()) {
+                        code.removeClass('hide');
+                                }
+                },
+                'click:relay(.auto-change-verify-handle)': function(e){
+                    e.stop();
+                    changeVerify(this);
+                },
+                'click:relay(#ajax_load_comment .pageview .flip)': function(e){
+                    e.stop();
+                    Query.update(this.href, this.getParent('.action-content-list'));
+                },
+                'click:relay(#try_report .pageview .flip)': function(e){
+                    e.stop();
+                    Query.update(this.href, this.getParent('.report-con'));
+                },
+                'click:relay(#try_report .control-btn)':function(){
+                    this.toggleClass('btn-close');
+                    var btn_text=this.getElement('span');
+                    this.hasClass('btn-close')? btn_text.set('text','收起'):btn_text.set('text','展开');
+                    if(this.hasClass('btn-close')){
+                        var after=this.getPrevious();
+                        if(after.get('data-report-id')){
+                        var url='shiyong-ajax_reportDeatail-'+after.get('data-report-id')+'.html';
+                        Query.update(url,after);
+                        after.removeProperty('data-report-id');
+                        }
+                    }
+                    this.getParent('.report-con').toggleClass('open');
+                },
+                'inputchange:relay(.action-filled-textarea)': function(){
+                    var p = this.getParent();
+                    var max = getVal(p, '.word-limit');
+                    var cur = p.getElement('.word-count .current');
+                    if(this.value.length > max) {
+                        this.value = this.value.substr(0, max);
+                        Message.error('内容最多输入' + max + '字');
+                    }
+                    cur.set('text', this.value.length);
+                },
+                'click:relay(.action-consult-trigger)': function(e){
+                    e.preventDefault();
+                }
+            });
+            function openReply(el) {
+                var parent = el.getParent('.mod');
+                var action = el.getParent('.reply-action') || el.getParent('.answer-action');
+                var reply = parent.getElement('.action-post-reply');
+                reply.removeClass('hide');
+                action.addClass('active-handle');
+                action.setStyle('height', parseInt(action.getStyle('height')) + reply.getSize().y);
+            }
+            function closeReply(el) {
+                var parent = el.getParent('.comment-list') || el.getParent('.mod');
+                var reply = parent.getElement('.action-post-reply');
+                var action = parent.getElement('.active-handle');
+                reply.addClass('hide');
+                if(action) {
+                    action.removeClass('active-handle');
+                    action.setStyle('height', '');
+                }
+            }
+
+            function notice(msg, inject, where, type) {
+                var el = new Element('div.notice' + (type ? '.' + type : ''), {html:msg}).inject(inject, where);
+                el.destroy.delay(3000,el);
+            }
+            notice.success = function(msg, inject, where) {
+                notice('<q class="icon">&#x25;</q>' + msg, inject, where, 'success');
+            };
+
+            function getVal(p,c,i) {
+                if(!c) return $(p).get('text');
+                p = $(p).getElement(c).get('text');
+                if(!i) return p;
+                return Number.from(p);
+            }
+            function toggleText(el, attr) {
+                attr = attr || 'data-toggle';
+                var a = el.get(attr);
+                var b = el.get('text');
+                el.set(attr, b).set('text', a);
+            }
+        </script>
+        
+    </div>

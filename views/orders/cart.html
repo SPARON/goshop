@@ -1,0 +1,262 @@
+[#[.bg]#]
+<link rel="stylesheet" href="/css/cart.css" />
+<div class="container">
+    <div class="bread-crumbs">
+    </div>
+    <div class="space">
+        <div id="main">
+            <!-- 购物车开始 -->
+            <div class="cart-title">
+                <h1>
+                    <i class="icon">&lt;</i>购物车
+                </h1>
+            </div>
+            <!--购物车为空提示-->
+            <div class="cart-empty {{if data && data.length > 0}}hide{{/if}}">
+                <q class="icon">=</q>
+                <q class="empty-tip"><b>您的购物车里还没有商品</b>，您可以：<br>将<a href="/member-favorite.html">收藏夹</a>中的商品添加进来，或者去看看 <a href="{{url.hosts.main}}">商城 »</a></q>
+            </div>
+            <div class="{{if  !data || data.length < 1}}hide{{/if}}" id="cartlist">
+                <!-- 购物车步骤图 -->
+                <div class="steps" id="cart_steps">
+                    <table width="100%">
+                        <tbody>
+                            <tr>
+                                <td class="step-item step-1 active"><span><q class="icon">P</q><i>1</i>购物车</span></td>
+                                <td class="icon step-arrow">(</td>
+                                <td class="step-item step-2"><q class="icon">P</q><i>2</i>填写和提交订单信息</td>
+                                <td class="icon step-arrow">(</td>
+                                <td class="step-item step-3"><span><q class="icon">P</q><i>3</i>成功提交订单</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- 购物车主体 -->
+                <div class="cart-container" id="cart_container">
+                    <div class="title"><h2>已选择的商品</h2></div>
+                    <form method="post" action="{{url.order}}">
+                        <!-- 购物车内容 -->
+                        <table width="100%" class="cart-main" id="cart_main">
+                            <colgroup>
+                                <col class="col-1">
+                                <col class="col-2">
+                                <col class="col-3">
+                                <col class="col-4">
+                                <col class="col-5">
+                                <col class="col-6">
+                                <col class="col-7">
+                                <col class="col-8">
+                            </colgroup>
+                            <thead>
+                                <tr>
+                                    <th colspan="3">商品</th>
+                                    <th>销售价</th>
+                                    <th>数量</th>
+                                    <!--  <th>优惠金额</th>-->
+                                    <th>积分</th>
+                                    <th>小计</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <!-- 购物车条目 -->
+                            <tbody class="cart-item ">
+                                {{each data as item}}
+                                <!-- 主商品 -->
+                                <tr class="cart-product last">
+                                    <td>
+                                        <input type="hidden" value="{{item.product.ProductID}}" id="product_id" />
+                                        <input type="hidden" value="{{item.product.Store - item.product.Freez}}" id="max">
+                                        <div class="p-pic">
+                                            <a target="_blank" href="{{url.product}}/{{item.product.ProductID}}"><img alt="{{item.product.Name}}" src="{{url.hosts.resources}}/{{item.product.MImage}}"></a>
+                                        </div>
+                                    </td>
+                                    <td colspan="2" class="p-info">
+                                        <div class="p-title"><a href="{{url.product}}/{{item.product.ProductID}}" target="_blank">{{item.product.Name}}</a></div>
+                                        <div class="p-spec">{{item.product.SpecInfo}}</div>
+                                        <!-- 赠品 -->
+                                        <!-- 商品促销 -->
+                                        <div class="p-promotion">
+                                            <ul></ul>
+                                        </div>
+                                    </td>
+                                    <td class="p-price">￥{{item.product.Price.toFixed(2)}}</td>
+                                    <td>
+                                        <div class="p-quantity">
+                                            <a class="btn-decrease" href="javascript:void(0);">-</a>
+                                            <input type="text" value="{{item.nums}}" name="modify_quantity[{{item.product.ProductID}}]" id="nums" />
+                                            <a class="btn-increase" href="javascript:void(0);">+</a>
+                                        </div>
+                                    </td>
+                                    <!-- 取消显示优惠价格 -->
+                                    <!--  <td class="p-discount">￥0.00</td>-->
+                                    <td class="p-integral">
+                                        -
+                                    </td>
+                                    <td class="p-subtotal">￥{{item.price.toFixed(2)}}</td>
+                                    <td class="p-action">
+                                        <a data-gid="{{item.product.GoodsID}}" rel="_addfav_" class="btn-fav" href="javascript:void(0);">收藏</a>
+                                        <i>|</i>
+                                        <a class="btn-delete" href="javascript:void(0);">移除</a>
+                                    </td>
+                                </tr>
+                                <!-- 配件 -->
+                                {{/each}}
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td style="display:none" colspan="4">
+                                        <!-- 订单获得的优惠促销 -->
+                                        <div style="display:none;" id="order_promotion" class="order-promotion">
+                                            <h3><a class="btn-collapse action-toggle" href="javascript:void(0);">-</a>订单优惠</h3>
+                                            <ul class="content"></ul>
+                                        </div>
+                                        <!-- 未享受到的优惠促销 -->
+                                        <div class="unused-promotion" id="unused_promotion">
+                                            <h3><a class="btn-collapse action-toggle" href="javascript:void(0);">-</a>您还未享受到的优惠    </h3>
+                                            <ul class="content">
+                                                <li><b>[包邮]</b>补拍免运费</li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                    <!-- 订单价格 -->
+                                    <td id="order_price" class="order-price" colspan="8">
+                                        <ul>
+                                            <li class="goods">
+                                                <span class="label"><em>商品金额：</em></span>
+                                                <span class="price"><b>￥{{subtotal.toFixed(2)}}</b></span>
+                                            </li>
+                                            <li class="total">
+                                                <span class="label"><em>总金额：</em></span>
+                                                <span class="price"><b>￥{{subtotal.toFixed(2)}}</b></span>
+                                            </li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <!-- 按钮 -->
+                                    <td class="cart-left" colspan="4">
+                                        <button class="btn btn-flat action-clean" type="button" id="clearCart"><span><span>清空购物车</span></span></button>
+                                    </td>
+                                    <td class="cart-right" colspan="4">
+                                        <a class="btn-link" href="{{url.hosts.main}}">继续购物</a>
+                                        <button class="btn btn-import btn-huge action-settle" rel="_request" type="submit"><span><span>下单结算<q class="f-icon">►</q></span></span></button>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </form>
+                </div>
+            </div>
+            <!-- 浏览过的商品 -->
+            <div style="display:none" class="view-history" id="view_history">
+                <div class="title">浏览过的商品<!--  <a href="javascript:void(0);" id="clear_history">清除</a> --></div>
+                <div class="content">
+                    <ul class="history-list"></ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    //更新总价格
+    var updateTotal = function (price,type) {
+        type = type || 'total';
+        $('order_price').getElement('ul .'+type+' .price').set('html', "<b>￥" + price.toFixed(2)+'</b>');
+    }
+    $('clearCart').addEvent('click',function (e) {
+            e.stop;
+            showConfirm("您确定需要清空购物车么?该操作无法撤销", function () {
+                new Request.JSON({
+                    url: "/cart/clear.api",
+                    method: "POST",
+                    onFailuer: function (request) {
+                        showMsg("网络不畅，用户登入失败");
+                    },
+                    onSuccess: function (data) {
+                        if (data.code == 0) {
+                            showMsg("购物车清除成功");
+                            $('cartlist').addClass('hide'); //隐藏购物车数据
+                            $$('.cart-item').set('html','');//购物车内容清空
+                            $$('.cart-empty').removeClass('hide');//显示购物车为空
+                        } else {
+                            showMsg("购物车清除失败");
+                        }
+                    },
+                }).send();
+            }, "清空", "我再想想");
+        }
+    )
+    $$('.cart-item').addEvents({
+        'click:relay(.btn-delete)': function (e) {
+            e.stop();
+            var tr = this.getParent('.cart-product');
+            var product_id = tr.getElement("#product_id").value;
+            showConfirm("您确定移除该商品么?该操作无法撤销", function () {
+                new Request.JSON({
+                    url: "/cart/remove.api",
+                    data: { product_id: product_id },
+                    method: "POST",
+                    onSuccess: function (data) {
+                        if (data.code == 0) {
+                            data = data.data;
+                            tr.remove();
+                            updateTotal(data.subtotal, 'goods');
+                            updateTotal(data.subtotal, 'total');
+                        } else {
+                            showMsg("商品移除失败");
+                        }
+                    }
+                }).send();
+            });
+        },
+        'click:relay(.btn-decrease)': function (e) {
+            e.stop();
+            var $this = this;
+            var nums = $this.getNext("#nums").value;
+            nums--;
+            if (nums < 1) {
+                showMsg("该商品最小购买数量为1");
+                return;
+            }
+            var product_id = $this.getParent('.cart-product').getElement("td #product_id").value;
+            new Request.JSON({
+                url: "/cart/add.api",
+                data: { product_id: product_id, nums: -1 },
+                onSuccess: function (data) {
+                    if (data.code == 0) {
+                        data = data.data;
+                        $this.getNext("#nums").value = nums;
+                        $this.getParents('.cart-product').getElement('.p-subtotal').set('html', "￥" + data.product_price.toFixed(2));
+                        updateTotal(data.subtotal, 'goods');
+                        updateTotal(data.subtotal, 'total');
+                    }
+                }
+            }).send();
+        },
+        'click:relay(.btn-increase)': function (e) {
+            e.stop;
+            $this = this;
+            var nums = $this.getPrevious("#nums").value;
+            var store = $this.getParent('.cart-product').getElement("td #max").value;
+            nums++;
+            if (nums > store) {
+                showMsg("该商品购买数量超出库存");
+                return;
+            }
+            var product_id = $this.getParent('.cart-product').getElement("td #product_id").value;
+            new Request.JSON({
+                url: "/cart/add.api",
+                data: { product_id: product_id, nums: 1 },
+                onSuccess: function (data) {
+                    if (data.code == 0) {
+                        data = data.data;
+                        $this.getPrevious("#nums").value=nums;
+                        $this.getParent('.cart-product').getElement('.p-subtotal').set('html', "￥" + data.product_price.toFixed(2));
+                        updateTotal(data.subtotal, 'goods');
+                        updateTotal(data.subtotal, 'total');
+                    }
+                }
+            }).send();
+        }
+    });
+</script>

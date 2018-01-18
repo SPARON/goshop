@@ -1,0 +1,187 @@
+[#[.informations]#]
+<div style="margin-bottom:0px;padding-bottom:50px;" class="regcon">
+    <a href="{{url.hosts.main}}" class="m-hwlogo"></a><span class="m-hwtit">欢迎注册</span>
+    <div class="ui_tab">
+        <ul class="ui_tab_nav">
+            <li class="uli">会员注册</li>
+            <li class="loginbtn">我已注册，马上<a data-pjax=".informations" href="{{url.hosts.sso}}{{url.login}}?redirectURL={{gotoURL}}">登录></a></li>
+        </ul>
+        <div style="height:auto" class="ui_tab_content">
+            <div class="signup-article">
+                <div id="page_signup" class="signupin-content signup">
+                    <form action="{{url.hosts.sso}}{{url.register}}" method="post">
+                        <ul>
+                            <li class="form-item">
+                                <label class="form-label"><em class="warn">*</em>手机号：</label><span class="form-act">
+                                    <input type="text" name="username" data-caution="请填写手机号" vtype="required&&mobile" placeholder="手机号" style="width:210px" class="x-input action-account-check" /><span class="validation-messagebox"></span>
+                                </span>
+                            </li>
+                            <li class="form-item">
+                                <label class="form-label"><em class="warn">*</em>密码：</label><span class="form-act">
+                                    <input type="password" name="password" onpaste="return false;" oncontextmenu="return false;" data-caution="请填写密码，6-20个字符&&输入不正确，最少6个字符&&输入不正确，最多20个字符" vtype="required&&minLength:6&&maxLength:20" placeholder="6-20个字符" maxlength="20" style="width:160px" class="x-input auto-password-check-handle" />
+                                    <span class="password-check" style="visibility: visible;">
+                                        <q>密码强度：</q><em class="poor">差</em><em class="weak">弱</em><em class="good">中</em><em class="strong">强</em><span class="progress"><span class="percent"></span></span>
+                                </span>
+                                </span>
+                            </li>
+                            <li class="form-item">
+                                <label class="form-label"><em class="warn">*</em>确认密码：</label><span class="form-act">
+                                    <input type="password" name="psw_confirm" onpaste="return false;" oncontextmenu="return false;" data-caution="密码与确认密码不相符，请重新填写" vtype="equal:password" maxlength="20" placeholder="再次填写密码" style="width:210px" class="x-input" /><span class="validation-messagebox"></span>
+                                </span>
+                            </li>
+                            <li class="form-item action-verifycode">
+                                <label class="form-label">验证码：</label><span class="form-act">
+                                    <input type="text" name="vcode" data-caution="请填写验证码" vtype="required&&alphaint" autocomplete="off" maxlength="4" placeholder="填写验证码" class="x-input verify-input" /><img src="{{url.hosts.sso+url.vcodeimg}}" alt="验证码" title="点击更换验证码" style="margin-left: 5px;" class="verify-code auto-change-verify-handle" /><a id="vimgbtn" class="verify-code auto-change-verify-handle">换一个</a>
+                                </span>
+                            </li>
+                            <li class="form-item action-need-verify">
+                                <label class="form-label">手机验证码：</label><span class="form-act">
+                                    <input type="text" vtype="required" data-caution="验证码必填" name="vcodesms" placeholder="验证码" class="x-input verify-input" /><a href="/sms" class="btn btn-caution action-get-verifycode"><span><span id="message">获取短信验证码</span></span>
+                                </a>
+                                </span>
+                            </li>
+                            <li class="form-item">
+                                <label class="form-label"></label><span class="form-act">
+                                    <input data-caution="请选择同意" vtype="onerequired" type="checkbox" name="license" class="x-check" />
+                                    <label class="form-sub-label">我已阅读并同意 <a href="/passport-license.html" target="_blank" class="lnklike">会员注册协议</a> 和 <a href="/index.php/passport-privacy.html" target="_blank" class="lnklike">隐私保护政策</a></label><span class="validation-messagebox"></span>
+                                </span>
+                            </li>
+                            <li class="form-item-normal">
+                                <label class="form-label"></label><span class="form-act">
+                                    <button rel="_request" type="submit" class="btn btn-big"><span><span>同意协议并注册</span></span>
+                                </button>
+                                </span>
+                            </li>
+                        </ul>
+                    </form>
+                </div>
+            </div>
+            <div style="height:auto" class="signup-bg"><img src="{{url.hosts.resources}}/themes/lcfgly/images/onlogging/img/qiqiu.png" style="margin:0px;margin-top: 45px;"
+                /></div>
+        </div>
+    </div>
+</div>
+<script>
+    Module = new Module('page', ['signup']);
+    var modname = 'page.signup';
+    var Query = {
+        send: function (url, element, data, fn,method) {
+            var request = new Request({
+                url: url,
+                link: 'cancel',
+                onSuccess: function (rs) {
+                    var tips = element.retrieve('tips_instance', new formTips({
+                        target: element,
+                        where: 'after',
+                        single: true,
+                        store: true,
+                        autohide: false,
+                        destroy: true
+                    })).hide();
+                    if (rs) {
+                        try {
+                            rs = JSON.decode(rs);
+                            if (rs.code == 0)
+                                rs["success"] = rs.data;
+                            else
+                                rs['error'] = rs.msg;
+                        } catch (e) { }
+                        if (rs.error) {
+                            if (typeof rs.error === 'string') tips.show(rs.error, { type: 'error' });
+                        }
+                        else {
+                            if (typeof rs.success === 'string') tips.show(rs.success, { type: 'success', autohide: 3 });
+                        }
+                        fn && fn.call(this, rs);
+                    }
+                }
+            });
+            if (method == 'GET')
+                request.get(data);
+            else
+                request.post(data);
+        }
+    };
+    function redirect(url) {
+        if (url) top.location.href = url;
+    }
+    function sendVerify(el, data) {
+        Module.element(modname, '.action-verifycode').style.display = 'none';
+        var url = el.href;
+        var textCont = el.getElement('span span');
+        el.addClass('disabled');
+        textCont.innerHTML = el.get('text') + '(<i>0</i>)';
+        var cd = new countdown(textCont.getElement('i'), {
+            start: 120,
+            secondOnly: true,
+            callback: function (e) {
+                el.removeClass('disabled');
+                Module.element(modname, '.action-verifycode').style.display = '';
+                textCont.innerHTML = '重发验证码';
+            }
+        });
+        Query.send(url, el, data, function (rs) {
+            if (rs.error) {
+                cd.stop();
+                el.removeClass('disabled');
+                Module.element(modname, '.action-verifycode').style.display = '';
+                textCont.innerHTML = '重发验证码';
+            }
+        });
+    };
+    Module.get(modname).getElement('button[type=submit]').store('_ajax_config', {
+        progress: function (rs) {
+            rs[rs.code == 0 ? "success" : "error"] = rs.msg;
+            if (rs.error) {
+                changeCode(Module.element(modname, 'img.auto-change-verify-handle'));
+                return top.Message.error(rs.error, function () {
+                    redirect(rs.redirect);
+                });
+            }
+            if (rs.success) return top.Message.success(rs.success + '<br><b>系统即将跳转到注册前页面</b>', function () {
+                redirect(rs.redirect);
+            });
+            redirect(rs.redirect);
+        }
+    });
+    Module.get(modname).addEvents({
+        'change:relay(.action-account-check)': function (e) {
+            var self = this;
+            var value = this.value;
+            Query.send('/members/register/checkuser.api', this, 'username=' + this.value,null,"GET");
+        },
+        'click:relay(.action-get-verifycode)': function (e) {
+            e.preventDefault();
+            var el = Module.element(modname, '.action-account-check');
+            var vel = Module.element(modname, '[name=vcode]');
+            phone = el.value;
+            if (vel.value.length < 4) {
+                var tips = vel.retrieve('tips_instance', new formTips({
+                    target: vel,
+                    where: 'after',
+                    single: true,
+                    store: true,
+                    autohide: false,
+                    destroy: true
+                })).hide();
+                tips.show("请填写验证码", { type: 'error', autohide: 3 });
+                return false;
+            }
+            if (phone === null || phone.length < 1 || !validatorMap.mobile[1](el, phone)) {
+                var tips = el.retrieve('tips_instance', new formTips({
+                    target: el,
+                    where: 'after',
+                    single: true,
+                    store: true,
+                    autohide: false,
+                    destroy: true
+                })).hide();
+                tips.show("请填写正确手机号", { type: 'error' });
+                return false;
+            }
+            if (this.hasClass('disabled')) return false;
+            sendVerify(this, 'phone=' + phone + '&vcode='+vel.value+'&type=signup');
+        }
+    });
+
+</script>

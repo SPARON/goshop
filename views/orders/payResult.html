@@ -1,0 +1,29 @@
+[#[.bg]#]
+<div class="container">
+    <div class="bread-crumbs">
+    </div>
+    <div class="space">
+        <!-- checkout主体 -->
+        <div class="complete-container" id="complete_container">
+            <!-- checkout内容 -->
+            <div class="content">
+                {{if succ == 'Succ'}}
+                <div class="msg msg-success">
+                    <i class="icon">%</i>
+                    <span class="msg-cont"><span class="msg-ttl">付款成功！</span> <i>[订单：<b>{{id}}</b>&#12288;&#12288;已付金额：<b class="price">￥{{amount.toFixed(2)}}</b>]</i><br></span>
+                </div>
+                {{else}}
+                <div class="msg msg-error">
+                    <i class="icon">%</i>
+                    <span class="msg-cont"><span class="msg-ttl">{{errormsg}}</span> <br></span>
+                </div>
+                {{/if}}
+                <div class="may-need">
+                    您可能需要:
+                    <a class="lnklike" href="{{url.hosts.member}}/member-orders.html"><i>查看订单</i> <q class="icon">3</q></a>
+                    <a class="lnklike" href="{{url.hosts.main}}"><i>继续购物</i> <q class="icon">3</q></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

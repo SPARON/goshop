@@ -1,0 +1,477 @@
+[#[.bg]#]
+<link rel="stylesheet" href="/css/cart.css" />
+<div class="body-main">
+    <div class="container">
+        <div class="bread-crumbs">
+        </div>
+        <div class="space">
+            <div id="main">
+                <!-- checkout开始 -->
+                <div class="cart-title">
+                    <h1>
+                        <i class="icon">&#x3c;</i>购物车
+                    </h1>
+                </div>
+                <!-- checkout步骤图 -->
+                <div id="cart_steps" class="steps">
+                    <table width="100%">
+                        <tbody>
+                            <tr>
+                                <td class="step-item step-1 active"><a href="{{url.cart}}"><q class="icon">&#x50;</q><i>1</i>购物车</a></td>
+                                <td class="icon step-arrow">&#x28;</td>
+                                <td class="step-item step-2 active"><span><q class="icon">&#x50;</q><i>2</i>填写和提交订单信息</span></td>
+                                <td class="icon step-arrow">&#x28;</td>
+                                <td class="step-item step-3"><q class="icon">&#x50;</q><i>3</i>成功提交订单</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- checkout主体 -->
+                <div id="order_container" class="order-container">
+                    <h2>选择收货地址</h2>
+                    <form action="{{url.ordercreate}}" method="post">
+                        <input type="hidden" name="ident" value="{{order.Ident}}" />
+                        <input type="hidden" name="member_id" value="{{order.MemberID}}" />
+                        <div id="order_main" class="order-main">
+                            <!-- 收货信息 -->
+                            <div id="order_shipping" class="shipping-address">
+                                <div class="list">
+                                    {{each order.Consignees as addr}}
+                                    <div class="addr {{if addr.DefAddr}}addr-cur{{/if}} addr-def">
+                                        <input type="radio" name="address" value='{{addr.ID}}' {{if addr.DefAddr}}checked="checked"{{/if}}>
+                                        <div class="inner">
+                                            <div class="addr-hd" title="{{addr.Areas[0]}}{{addr.Areas[1]}}({{addr.Name}}收)"><span class="prov">{{addr.Areas[0]}}</span><span class="city">{{addr.Areas[1]}}</span><span>（</span><span class="name">{{addr.Name}}</span><span> 收）</span></div>
+                                            <div title="{{addr.Area}}{{addr.Address}}" class="addr-bd"><span class="dist">{{addr.Areas[0]}}{{addr.Areas[1]}}{{addr.Areas[2]}}{{addr.Address}}</span><span class="Phone">{{addr.Phone}}</span></div>
+                                            <div class="addr-toolbar"><a title="修改地址" href="javascript:void(0);" class="modify">修改</a></div>
+                                        </div>
+                                        <ins class="curmarker"></ins>
+                                        {{if addr.DefAddr}}<ins class="deftip">默认地址</ins>{{else}}<a href="/member-set_default-{{addr.ID}}.html" class="setdefault">设为默认</a>{{/if}}
+                                    </div>
+                                    {{/each}}
+                                </div>
+                                <div class="control"><a class="manageAddr" href="/member-receiver.html" target="_blank">管理收货地址</a><div class="tc-btn createAddr">使用新地址</div></div>
+                            </div>
+                            <h2>确认订单信息</h2>
+                            {{each order.Suppliers as supplier}}
+                            <!-- 商品清单 -->
+                            <table id="cart_main" class="cart-main grid-bundle" width="100%">
+                                <colgroup>
+                                    <col class="col-2">
+                                    <col class="col-3">
+                                    <col class="col-4">
+                                    <col class="col-5">
+                                    <col class="col-6">
+                                    <col class="col-7">
+                                </colgroup>
+                                <thead>
+                                    <tr>
+                                        <th class="tube-title">店铺：{{supplier.Supplier.Name}}</th>
+                                        <th class="tube-price">销售价</th>
+                                        <th class="tube-amount">数量</th>
+                                        <th class="tube-promo">优惠金额</th>
+                                        <th class="tube-jf">积分</th>
+                                        <th class="tube-sum">小计</th>
+                                        <th class="tube-postage">配送方式</th>
+                                    </tr>
+                                    <tr class="row-border"><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td colspan="6">
+                                            <table>
+                                                <!-- 购物车条目 -->
+                                                {{each supplier.Products as p}}
+                                                <tbody class="cart-item">
+                                                    <!-- 主商品 -->
+                                                    <tr class="cart-product grid-order">
+                                                        <td class="tube-img">
+                                                            <a target="_blank" href="{{url.product}}/{{p.Product.ProductID}}" title="{{p.Product.Name}}" class="img"><img src="{{url.hosts.resources}}/{{p.Product.MImage}}" height="50"></a>
+                                                        </td>
+                                                        <td class="tube-master">
+                                                            <p class="item-title"><a title="{{p.Product.Name}}" target="_blank" href="{{url.product}}/{{p.Product.ProductID}}">{{p.Product.Name}}</a></p>
+                                                        </td>
+                                                        <td class="tube-sku">
+                                                            <p>
+                                                                {{p.Product.SpecInfo}}
+                                                            </p>
+                                                        </td>
+                                                        <td class="tube-price">￥{{p.Product.Price.toFixed(2)}}</td>
+                                                        <!--判断是不是预售商品-->
+                                                        <td class="tube-amount">{{p.Nums}}</td>
+                                                        <!--判断是不是预售商品-->
+                                                        <td class="p-discount">￥0.00</td>
+                                                        <td class="p-integral">
+                                                            -
+                                                        </td>
+                                                        <td class="p-subtotal">￥{{(p.Product.Price * p.Nums).toFixed(2)}}</td>
+                                                    </tr>
+                                                    <!-- 赠品 --><!--判断是不是预售商品-->
+                                                    <!-- 商品促销 -->
+                                                    <tr>
+                                                        <td class="p-promotion" colspan="6">
+                                                            <ul></ul>
+                                                        </td>
+                                                    </tr>
+                                                    <!-- 配件 -->
+                                                </tbody>
+                                                {{/each}}
+                                            </table>
+                                        </td>
+                                        <td class="tube-postage">
+                                            <lable class="hd">配送方式</lable>
+                                            <input type="hidden" value="{{supplier.Supplier.ID}}" id="supplierid" />
+                                            <select name="shipping[{{supplier.Supplier.ID}}]" class="action-change-delivery" id="expresschange" >
+                                                {{each supplier.Express as exp}}
+                                                <option value='{{exp.ID}}'>{{exp.Name}}</option>
+                                                {{/each}}
+                                            </select>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td class="tube-annex" colspan="5">
+                                            <div class="memo">
+                                                <label>给卖家留言：</label>
+                                                <div class="tc-inputmask">
+                                                    <textarea name="memo[{{supplier.Supplier.ID}}]" class="action-remark-textarea" placeholder="建议填和卖家达成一致的留言"></textarea>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="tube-bill" colspan="2">
+                                            <div class="orderPay">
+                                                重量:<strong>{{supplier.Weight}}克</strong>
+                                                <div id="scost_{{supplier.Supplier.ID}}" style="float:right">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;店铺合计:<strong>￥{{supplier.SubTotal.toFixed(2)}}</strong></div>
+                                                <div id="sfreight_{{supplier.Supplier.ID}}" style="float:right">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;邮费:<strong>￥{{supplier.CostFreight.toFixed(2)}}</strong></div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                            {{/each}}
+                        </div>
+                        <!-- 结算信息 -->
+                        <table id="order_clearing" class="order-clearing">
+                            <caption>结算信息</caption>
+                            <tbody>
+                                <tr>
+                                    <!-- 订单价格 -->
+                                    <td id="order_price" class="order-price">
+                                        <div class="inner">
+                                            <ul>
+                                                <li class="goods">
+                                                    <span class="label"><em>商品金额：</em></span>
+                                                    <span class="price"><b>￥{{order.SubTotal.toFixed(2)}}</b></span>
+                                                </li>
+                                                <li class="goods">
+                                                    <span class="label"><em>订单总重量：</em></span>
+                                                    <span class="price"><b>{{order.Weight}}克</b></span>
+                                                </li>
+                                                <li class="freight">
+                                                    <span class="label"><em>运费：</em></span>
+                                                    <span class="price">￥{{order.CostFreight.toFixed(2)}}</span>
+                                                </li>
+
+                                                <li class="total">
+                                                    <span class="label">
+                                                        <em>总金额：</em>
+                                                    </span>
+                                                    <span class="price"><b>￥{{order.Cost.toFixed(2)}}</b></span>
+                                                </li>
+
+                                            </ul>
+                                            <span class="message">未包含运费</span><p class="btnarea">
+                                                <a href="{{url.cart}}" class="btn-link">返回购物车 »</a>  <!--普通商品-->
+                                                <button type="submit" rel="_request" class="btn btn-import btn-big action-submit-order"><span><span>提交订单</span></span></button>
+                                                <!--判断是否是预售商品和预售商品的时间判断 判断是否是预售商品尾款时间判断
+                                                <button type="submit" rel="_request" class="btn btn-import btn-big action-submit-order"><span><span>提交订单</span></span></button>-->
+                                            </p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </form>
+                </div>
+            </div>
+            <!-- 引导开始 -->
+            <div class="yjm-guide-mask" id="yjm_guide" style="display:none"></div>
+            <!-- 引导1 -->
+            <div class="new-guide-1 yjm-guide-item" style="display:none">
+                <a href="javascript:void(0)"></a>
+            </div>
+            <div class="new-guide-2 yjm-guide-item" style="display:none">
+                <a href="javascript:void(0)"></a>
+            </div>
+            <div class="new-guide-3 yjm-guide-item" style="display:none">
+                <a href="javascript:void(0)"></a>
+            </div>
+            <!-- 引导结束-->
+        </div>
+    </div>
+</div>
+<!-- 引导开始 - ->
+<div class="yjm-guide-mask" id="yjm_guide" style="display:none"></div>
+<!-- 引导1 - ->
+<div class="new-guide-1 yjm-guide-item" style="display:none">
+    <a href="javascript:void(0)"></a>
+</div>
+<div class="new-guide-2 yjm-guide-item" style="display:none">
+    <a href="javascript:void(0)"></a>
+</div>
+<div class="new-guide-3 yjm-guide-item" style="display:none">
+    <a href="javascript:void(0)"></a>
+</div>
+<!-- 引导结束-->
+<script>
+    var changeCost=function(){
+        var supplier_id = $('expresschange').getPrevious('#supplierid').value;
+        var dltype_id = $$('#expresschange').get("value")[0];
+        var ident = $$("input[name=ident]").get("value")[0];
+        var member = $$('input[name=member_id]').get("value")[0];
+        var local = $$('input[name=address]:checked').get("value")[0];
+        new Request.JSON({
+            url: "/order/updatexpress.api",
+            data: { supplier: supplier_id, dltype: dltype_id, ident: ident,member_id:member,local:local },
+            onSuccess: function (result) {
+                if (result.code == 0) {
+                    result = result.data;
+                    $("sfreight_" + supplier_id).getElement("strong").set('html','￥' + result['supplier_freight'].toFixed(2));
+                    $('order_price').getElement(".freight .price").set('html','￥' + result['freight'].toFixed(2));
+                    $('order_price').getElement(".total .price").set('html','<b>￥' + result['cost'].toFixed(2) + '</b>');
+                } else {
+                    showMsg("快递修改失败："+result.msg);
+                }
+            }
+        }).send();
+    }
+$$('.yjm-guide-item a').addEvent('click',function(){
+  this.getParent().hide();
+  Cookie.write('yjm-guide',Cookie.read('yjm-guide').toInt()+1);
+  var index =$$('.yjm-guide-item a').indexOf(this);
+  if(index==0) $$('.action-change-delivery').addClass('highlight');
+  if(index==1) $$('.action-change-delivery').removeClass('highlight');
+  if(index==2) {
+    $('yjm_guide').hide();
+    window.scrollTo(0,0);
+  }
+  if(index!=2) {
+    $$('.yjm-guide-item')[index+1].show();
+    window.scrollTo(0,$$('.yjm-guide-item')[index+1].getTop())
+  }
+});
+window.addEvent('domready', function() {
+  //Cookie.dispose('yjm-guide');
+  var item=Cookie.read('yjm-guide');
+  //初始化
+  $$('.new-guide-2').setStyle('top',$(cart_main).getElement('table').getHeight()/2+290);
+  $$('.new-guide-3').setStyle('top',$(cart_main).getElement('table').getHeight()+470);
+  if(!item){
+    $('yjm_guide').show();
+    Cookie.write('yjm-guide','1');
+  }
+  if(Cookie.read('yjm-guide')!=4 && Cookie.read('yjm-guide')<4){
+    if(Cookie.read('yjm-guide')==2) $$('.action-change-delivery').addClass('highlight');
+    $('yjm_guide').show();
+    $$('.new-guide-'+Cookie.read('yjm-guide')).show();
+  }
+});
+var popup;
+function load(url,title,data,onSuccess,type,method){
+  popup=new Popup(url,{
+    width:800,
+    height:380,
+    title:title,
+    modal:window,
+    effect:false,
+    type:type,
+    async: 'ajax',
+    asyncOptions: {
+      method: method || 'POST',
+      data:data,
+      onSuccess:onSuccess,
+    }
+  })
+}
+function creatAddr(type){
+    load('{{url.member_add_address}}','使用新地址','address=0',function(rs){
+    $$('.action-add-address').addEvent('click', function(e){
+      if(validate($$('.fill-shipping')[0], 'all')){
+        var update=new Element('div', {'class': 'addr'});
+        var request=new Request.HTML({
+            url:'{{url.member_add_address}}',
+          update:update,
+          data:$$('.fill-shipping')[0],
+          onSuccess: function(rs) {
+            var json;
+            try{
+              json = JSON.validate(rs) ? JSON.decode(rs) : null;
+              if(json && json.error) return Message.error(json.error);
+            }catch(e){}
+            popup.hide();
+            update.inject($$('.shipping-address .list')[0]);
+            update.click();
+          },
+        }).send();
+      }
+    })
+  },type,'GET');
+}
+{{if !order.Consignees}}
+creatAddr('noclose');
+{{/if}}
+    function setPrice(el, rate) {
+        var area = $('order_deduction');
+        var value = typeOf(el) == 'element' ? priceControl.format(el.value * rate) : el;
+        area.getElement('.action-deduct-price').set('text', value);
+    }
+    var time;
+    $('main').addEvents({
+        'change:relay(#expresschange)':function(e){
+            e.stop();
+            changeCost();
+        },
+        'click:relay(.setdefault)': function(e) {
+            e.stop();
+            var cur=this.getParent('.list').getElement('.addr-cur');
+            var el=this;
+            var addr=this.getParent('.addr');
+            new Request({
+                url:this.href,
+                data:'response_json=true',
+                onSuccess: function(rs) {
+                    Message.success('设置成功');
+                    $$('.addr').removeClass('addr-def');
+                    addr.addClass('addr-def');
+                },
+            }).send();
+        },
+        'click:relay(.addr)':function(e){
+            if(this.hasClass('addr-cur')) return
+            this.getElement('input').set('checked','true');
+            this.getParent('.list').getElements('.addr').removeClass('addr-cur');
+            this.addClass('addr-cur');
+            changeCost();
+        },
+        'click:relay(.modify)':function(e){
+            e.stop();
+            var el=this;
+            load('{{url.member_edit_address}}','修改地址',el.getParent('.addr'),function(rs){
+                $$('.action-save-address').addEvent('click', function(e){
+                    if(validate($$('.fill-shipping')[0], 'all')){
+                        new Request.HTML({
+                            update:$$('.addr.addr-cur')[0],
+                            url:'{{url.member_add_address}}',
+                            data:el.getParent('.addr').toQueryString()+'&'+$$('.fill-shipping')[0].toQueryString(),
+                            onSuccess: function(rs) {
+                                var json;
+                                try{
+                                    json = JSON.validate(rs) ? JSON.decode(rs) : null;
+                                    if(json && json.error) return Message.error(json.error);
+                                }catch(e){}
+                                popup.hide();
+                            },
+                        }).send();
+                    }
+                })
+            },null,"GET");
+        },
+        'click:relay(.createAddr)':function(e){
+            e.stop();
+            creatAddr();
+        },
+        //= 订单优惠收起/展开
+        'click:relay(.action-toggle)': function(e) {
+            e.stop();
+            this.set('text', this.hasClass('btn-collapse') ? '+' : '-').toggleClass('btn-collapse').toggleClass('btn-expand').getParent('h3').getNext('.content').toggle();
+        },
+        'inputchange:relay(.action-input-score)':function(){
+            var inputscorevalue = '';
+            var parent = this.getParent('.content');
+            var max = Math.min(parent.getElement('.action-max-score').get('text'), parent.getElement('.action-user-score').get('text'));
+            var rate = parent.getElement('input[name="point[rate]"]').value;
+            var price = parent.getElement('.action-deduct-price');
+            if(this.value == 0) {
+                this.value == '';
+                return;
+            }
+            if(isNaN(this.value)) {
+                this.value = inputscorevalue;
+                //setPrice(0);
+                return;
+            }
+            if(!this.value.test(/^(0|[1-9][0-9]*)?$/)) {
+                this.value = this.value.substr(0, this.value.length - 1);
+                return;
+            }
+            if(Number(this.value) > max) {
+                inputscorevalue = this.value = max;
+                setPrice(this, rate);
+                return this.tips('本次能使用的最大积分为' + max);
+            }
+            inputscorevalue = this.value;
+            setPrice(this, rate);
+        },
+        //= 使用积分
+        'click:relay(.action-confirm-score)': function(e) {
+            var parent = this.getParent('.scoreinput');
+            var value = parent.getElement('.action-input-score').value;
+            if(!value) return;
+            new Request({
+                url:'tools-count_digist.html',
+                onSuccess:function(rs){
+                    rs = {
+                        price: priceControl.format(rs),
+                        score: value
+                    };
+                    var tpl = '抵扣积分：<strong>{score}</strong> 抵扣金额：<b>{price}</b> <a href="javascript:void(0);" class="lnklike action-cancel-score">[取消使用]</a>';
+                    parent.addClass('fold');
+                    var xtip = $('xtips_container');
+                    if(xtip && xtip.isVisible()) xtip.retrieve('tips').hide();
+                    parent.getNext('.usedscore').set('html',tpl.substitute(rs)).removeClass('fold');
+                    total.price.refresh();
+                    total.promotion.refresh();
+                }
+            }).send(parent);
+        },
+        'click:relay(.action-cancel-score)': function(e) {
+            e.stop();
+            var p = $('order_deduction');
+            p.getElement('.usedscore').addClass('fold');
+            p.getElement('.scoreinput').removeClass('fold');
+            p.getElement('.action-input-score').value = '';
+            setPrice(0);
+            total.price.refresh();
+            total.promotion.refresh();
+        },
+        'enter:relay(.createAddr)':function(e){
+            e.stop();
+        },
+        'inputchange:relay(.action-remark-textarea)':function(){
+            $$('.tc-counter-tip').getElement('span').set('text',200-this.value.length>0?200-this.value.length:0);
+            if(this.value.length > 200) {
+                this.tips('订单备注最多输入200字').value = this.value.substr(0, 200);
+            }
+        },
+        'click:relay(.tc-inputmask)':function(){
+            this.addClass('active');
+            this.getParent('.memo').addClass('memo-expand');
+            this.getElement('textarea').focus();
+        },
+        'blur:relay(.action-remark-textarea)':function(){
+            if(this.value.length) return;
+            this.getParent('.tc-inputmask').removeClass('active');
+            this.getParent('.memo').removeClass('memo-expand');
+        },
+        'mouseenter:relay(.hint)':function(){
+            clearTimeout(time);
+            this.getElement('.info-feed').show();
+        },
+        'mouseleave:relay(.hint)':function(){
+            var hide=function(){
+                this.hide();
+            };
+            time=hide.delay(150,this.getElement('.info-feed'));
+        }
+    })
+</script>

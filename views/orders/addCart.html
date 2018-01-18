@@ -1,0 +1,16 @@
+{{if error}}
+<div class="minicart-error"><p align="center">加入购物车失败。<br>可能库存不足或提交信息不完整。</p></div>
+{{else}}
+<div class="minicart-infos">
+    <p>
+        <q class="icon">&#x25;</q><span class="caution-content">
+            加入购物车成功。<br>目前选购商品共<em>{{count}}</em>件。合计：<i class="price">￥{{subtotal.toFixed(2)}}</i>
+        </span>
+    </p>
+    <div class="actions">
+        <button type="button" class="btn btn-simple popup-btn-close">
+            <span><span>继续购物</span></span>
+        </button><a class="btn btn-major" href="{{url.hosts.order}}{{url.cart}}"><span><span>进入购物车</span></span></a>
+    </div>
+</div>
+{{/if}}

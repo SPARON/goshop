@@ -1,0 +1,48 @@
+[#[.informations]#]
+<div class="secure-header">
+    <div class="secure-content">
+        <a class="logo"></a>
+        <h2 class="logo-title">找回密码</h2>
+        <ul class="secure-header-nav">
+            <li class="nav-first"><a target="_blank" href="{{url.hosts.main}}">首页</a></li>
+            <li><a data-pjax=".informations" target="_blank" href="{{url.hosts.sso}}{{url.register}}?redirectURL={{gotoURL}}">注册</a></li>
+            <li><a data-pjax=".informations" target="_blank" href="{{url.hosts.sso}}{{url.login}}?redirectURL={{gotoURL}}" id="navlogin">登录</a></li>
+        </ul>
+    </div>
+</div>
+<div class="secure">
+    <!--步骤图-->
+    <div id="forgot_steps" class="steps forgot-steps">
+        <table width="100%">
+            <tbody>
+                <tr>
+                    <td class="step-item step-1 {{if !step || step === 1}}active{{/if}}">
+                        <span>
+                            <q class="icon">P</q><i>1</i>填写账户名
+                        </span>
+                    </td>
+                    <td class="icon step-arrow">(</td>
+                    <td class="step-item step-2 {{if step === 2}}active{{/if}}">
+                        <span>
+                            <q class="icon">P</q><i>2</i>身份验证
+                        </span>
+                    </td>
+                    <td class="icon step-arrow {{if step === 3}}active{{/if}}">(</td>
+                    <td class="step-item step-3">
+                        <span>
+                            <q class="icon">P</q><i>3</i>设置新密码
+                        </span>
+                    </td>
+                    <td class="icon step-arrow {{if step === 4}}active{{/if}}">(</td>
+                    <td class="step-item step-4">
+                        <span>
+                            <q class="icon">P</q><i>4</i>完成
+                        </span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <!--找回密码-->
+    <div id="forgot_content" class="forgot-content signupin-content"></div>
+</div>

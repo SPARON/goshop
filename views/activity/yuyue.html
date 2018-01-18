@@ -1,0 +1,309 @@
+[#[.bg]#]
+<link rel="stylesheet" href="/css/cart.css" />
+<div class="body-main">
+    <div class="container">
+        <div class="bread-crumbs">
+        </div>
+        <div class="space">
+            <div id="main">
+                <!-- checkout开始 -->
+                <div class="cart-title">
+                    <h1>
+                        <i class="icon">&#x3c;</i>预约抢购
+                    </h1>
+                </div>
+                <!-- checkout主体 -->
+                <div id="order_container" class="order-container">
+                    <h2>选择收货地址</h2>
+                    <form action="{{url.qiangou}}" method="post">
+                        <div id="order_main" class="order-main">
+                            <!-- 收货信息 -->
+                            <div id="order_shipping" class="shipping-address">
+                                <div class="list">
+                                    {{each order.Consignees as addr}}
+                                    <div class="addr {{if addr.DefAddr}}addr-cur{{/if}} addr-def">
+                                        <input type="radio" name="address" value='{{addr.ID}}' {{if addr.DefAddr}}checked="checked"{{/if}}>
+                                        <div class="inner">
+                                            <div class="addr-hd" title="{{addr.Areas[0]}}{{addr.Areas[1]}}({{addr.Name}}收)"><span class="prov">{{addr.Areas[0]}}</span><span class="city">{{addr.Areas[1]}}</span><span>（</span><span class="name">{{addr.Name}}</span><span> 收）</span></div>
+                                            <div title="{{addr.Area}}{{addr.Address}}" class="addr-bd"><span class="dist">{{addr.Areas[0]}}{{addr.Areas[1]}}{{addr.Areas[2]}}{{addr.Address}}</span><span class="Phone">{{addr.Phone}}</span></div>
+                                            <div class="addr-toolbar"><a title="修改地址" href="javascript:void(0);" class="modify">修改</a></div>
+                                        </div>
+                                        <ins class="curmarker"></ins>
+                                        {{if addr.DefAddr}}<ins class="deftip">默认地址</ins>{{else}}<a href="/member-set_default-{{addr.ID}}.html" class="setdefault">设为默认</a>{{/if}}
+                                    </div>
+                                    {{/each}}
+                                </div>
+                                <div class="control"><a class="manageAddr" href="/member-receiver.html" target="_blank">管理收货地址</a><div class="tc-btn createAddr">使用新地址</div></div>
+                            </div>
+                        </div>
+                        <!-- 结算信息 -->
+                        <table id="order_clearing" class="order-clearing">
+                            <caption>确认预约信息</caption>
+                            <tbody>
+                                <tr>
+                                    <!-- 订单价格 -->
+                                    <td id="order_price" class="order-price">
+                                        <div class="inner">
+                                            <p class="btnarea">
+                                                <button type="submit" rel="_request" class="btn btn-import btn-big action-submit-order"><span><span>提交订单</span></span></button>
+                                                <!--判断是否是预售商品和预售商品的时间判断 判断是否是预售商品尾款时间判断
+                                                <button type="submit" rel="_request" class="btn btn-import btn-big action-submit-order"><span><span>提交订单</span></span></button>-->
+                                            </p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </form>
+                </div>
+            </div>
+            <!-- 引导开始 -->
+            <div class="yjm-guide-mask" id="yjm_guide" style="display:none"></div>
+            <!-- 引导1 -->
+            <div class="new-guide-1 yjm-guide-item" style="display:none">
+                <a href="javascript:void(0)"></a>
+            </div>
+            <div class="new-guide-2 yjm-guide-item" style="display:none">
+                <a href="javascript:void(0)"></a>
+            </div>
+            <div class="new-guide-3 yjm-guide-item" style="display:none">
+                <a href="javascript:void(0)"></a>
+            </div>
+            <!-- 引导结束-->
+        </div>
+    </div>
+</div>
+<!-- 引导开始 - ->
+<div class="yjm-guide-mask" id="yjm_guide" style="display:none"></div>
+<!-- 引导1 - ->
+<div class="new-guide-1 yjm-guide-item" style="display:none">
+    <a href="javascript:void(0)"></a>
+</div>
+<div class="new-guide-2 yjm-guide-item" style="display:none">
+    <a href="javascript:void(0)"></a>
+</div>
+<div class="new-guide-3 yjm-guide-item" style="display:none">
+    <a href="javascript:void(0)"></a>
+</div>
+<!-- 引导结束-->
+<script>
+    var changeCost=function(){
+        var supplier_id = $('expresschange').getPrevious('#supplierid').value;
+        var dltype_id = $$('#expresschange').get("value")[0];
+        var ident = $$("input[name=ident]").get("value")[0];
+        var member = $$('input[name=member_id]').get("value")[0];
+        var local = $$('input[name=address]:checked').get("value")[0];
+        new Request.JSON({
+            url: "/order/updatexpress.api",
+            data: { supplier: supplier_id, dltype: dltype_id, ident: ident,member_id:member,local:local },
+            onSuccess: function (result) {
+                if (result.code == 0) {
+                    result = result.data;
+                    $("sfreight_" + supplier_id).getElement("strong").set('html','￥' + result['supplier_freight'].toFixed(2));
+                    $('order_price').getElement(".freight .price").set('html','￥' + result['freight'].toFixed(2));
+                    $('order_price').getElement(".total .price").set('html','<b>￥' + result['cost'].toFixed(2) + '</b>');
+                } else {
+                    showMsg("快递修改失败："+result.msg);
+                }
+            }
+        }).send();
+    }
+var popup;
+function load(url,title,data,onSuccess,type,method){
+  popup=new Popup(url,{
+    width:800,
+    height:380,
+    title:title,
+    modal:window,
+    effect:false,
+    type:type,
+    async: 'ajax',
+    asyncOptions: {
+      method: method || 'POST',
+      data:data,
+      onSuccess:onSuccess,
+    }
+  })
+}
+function creatAddr(type){
+    load('{{url.member_add_address}}','使用新地址','address=0',function(rs){
+    $$('.action-add-address').addEvent('click', function(e){
+      if(validate($$('.fill-shipping')[0], 'all')){
+        var update=new Element('div', {'class': 'addr'});
+        var request=new Request.HTML({
+            url:'{{url.member_add_address}}',
+          update:update,
+          data:$$('.fill-shipping')[0],
+          onSuccess: function(rs) {
+            var json;
+            try{
+              json = JSON.validate(rs) ? JSON.decode(rs) : null;
+              if(json && json.error) return Message.error(json.error);
+            }catch(e){}
+            popup.hide();
+            update.inject($$('.shipping-address .list')[0]);
+            update.click();
+          },
+        }).send();
+      }
+    })
+  },type,'GET');
+}
+{{if !order.Consignees}}
+creatAddr('noclose');
+{{/if}}
+    function setPrice(el, rate) {
+        var area = $('order_deduction');
+        var value = typeOf(el) == 'element' ? priceControl.format(el.value * rate) : el;
+        area.getElement('.action-deduct-price').set('text', value);
+    }
+    var time;
+    $('main').addEvents({
+        'change:relay(#expresschange)':function(e){
+            e.stop();
+            changeCost();
+        },
+        'click:relay(.setdefault)': function(e) {
+            e.stop();
+            var cur=this.getParent('.list').getElement('.addr-cur');
+            var el=this;
+            var addr=this.getParent('.addr');
+            new Request({
+                url:this.href,
+                data:'response_json=true',
+                onSuccess: function(rs) {
+                    Message.success('设置成功');
+                    $$('.addr').removeClass('addr-def');
+                    addr.addClass('addr-def');
+                },
+            }).send();
+        },
+        'click:relay(.addr)':function(e){
+            if(this.hasClass('addr-cur')) return
+            this.getElement('input').set('checked','true');
+            this.getParent('.list').getElements('.addr').removeClass('addr-cur');
+            this.addClass('addr-cur');
+            changeCost();
+        },
+        'click:relay(.modify)':function(e){
+            e.stop();
+            var el=this;
+            load('{{url.member_edit_address}}','修改地址',el.getParent('.addr'),function(rs){
+                $$('.action-save-address').addEvent('click', function(e){
+                    if(validate($$('.fill-shipping')[0], 'all')){
+                        new Request.HTML({
+                            update:$$('.addr.addr-cur')[0],
+                            url:'{{url.member_add_address}}',
+                            data:el.getParent('.addr').toQueryString()+'&'+$$('.fill-shipping')[0].toQueryString(),
+                            onSuccess: function(rs) {
+                                var json;
+                                try{
+                                    json = JSON.validate(rs) ? JSON.decode(rs) : null;
+                                    if(json && json.error) return Message.error(json.error);
+                                }catch(e){}
+                                popup.hide();
+                            },
+                        }).send();
+                    }
+                })
+            },null,"GET");
+        },
+        'click:relay(.createAddr)':function(e){
+            e.stop();
+            creatAddr();
+        },
+        //= 订单优惠收起/展开
+        'click:relay(.action-toggle)': function(e) {
+            e.stop();
+            this.set('text', this.hasClass('btn-collapse') ? '+' : '-').toggleClass('btn-collapse').toggleClass('btn-expand').getParent('h3').getNext('.content').toggle();
+        },
+        'inputchange:relay(.action-input-score)':function(){
+            var inputscorevalue = '';
+            var parent = this.getParent('.content');
+            var max = Math.min(parent.getElement('.action-max-score').get('text'), parent.getElement('.action-user-score').get('text'));
+            var rate = parent.getElement('input[name="point[rate]"]').value;
+            var price = parent.getElement('.action-deduct-price');
+            if(this.value == 0) {
+                this.value == '';
+                return;
+            }
+            if(isNaN(this.value)) {
+                this.value = inputscorevalue;
+                //setPrice(0);
+                return;
+            }
+            if(!this.value.test(/^(0|[1-9][0-9]*)?$/)) {
+                this.value = this.value.substr(0, this.value.length - 1);
+                return;
+            }
+            if(Number(this.value) > max) {
+                inputscorevalue = this.value = max;
+                setPrice(this, rate);
+                return this.tips('本次能使用的最大积分为' + max);
+            }
+            inputscorevalue = this.value;
+            setPrice(this, rate);
+        },
+        //= 使用积分
+        'click:relay(.action-confirm-score)': function(e) {
+            var parent = this.getParent('.scoreinput');
+            var value = parent.getElement('.action-input-score').value;
+            if(!value) return;
+            new Request({
+                url:'tools-count_digist.html',
+                onSuccess:function(rs){
+                    rs = {
+                        price: priceControl.format(rs),
+                        score: value
+                    };
+                    var tpl = '抵扣积分：<strong>{score}</strong> 抵扣金额：<b>{price}</b> <a href="javascript:void(0);" class="lnklike action-cancel-score">[取消使用]</a>';
+                    parent.addClass('fold');
+                    var xtip = $('xtips_container');
+                    if(xtip && xtip.isVisible()) xtip.retrieve('tips').hide();
+                    parent.getNext('.usedscore').set('html',tpl.substitute(rs)).removeClass('fold');
+                    total.price.refresh();
+                    total.promotion.refresh();
+                }
+            }).send(parent);
+        },
+        'click:relay(.action-cancel-score)': function(e) {
+            e.stop();
+            var p = $('order_deduction');
+            p.getElement('.usedscore').addClass('fold');
+            p.getElement('.scoreinput').removeClass('fold');
+            p.getElement('.action-input-score').value = '';
+            setPrice(0);
+            total.price.refresh();
+            total.promotion.refresh();
+        },
+        'enter:relay(.createAddr)':function(e){
+            e.stop();
+        },
+        'inputchange:relay(.action-remark-textarea)':function(){
+            $$('.tc-counter-tip').getElement('span').set('text',200-this.value.length>0?200-this.value.length:0);
+            if(this.value.length > 200) {
+                this.tips('订单备注最多输入200字').value = this.value.substr(0, 200);
+            }
+        },
+        'click:relay(.tc-inputmask)':function(){
+            this.addClass('active');
+            this.getParent('.memo').addClass('memo-expand');
+            this.getElement('textarea').focus();
+        },
+        'blur:relay(.action-remark-textarea)':function(){
+            if(this.value.length) return;
+            this.getParent('.tc-inputmask').removeClass('active');
+            this.getParent('.memo').removeClass('memo-expand');
+        },
+        'mouseenter:relay(.hint)':function(){
+            clearTimeout(time);
+            this.getElement('.info-feed').show();
+        },
+        'mouseleave:relay(.hint)':function(){
+            var hide=function(){
+                this.hide();
+            };
+            time=hide.delay(150,this.getElement('.info-feed'));
+        }
+    })
+</script>

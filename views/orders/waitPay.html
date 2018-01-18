@@ -1,0 +1,104 @@
+[#[.bg]#]
+<div class="container">
+    <div class="bread-crumbs"></div>
+    <div class="space">
+        <!-- 支付中心主体 -->
+        <div class="payment-container" id="payment_container">
+            <div class="title"><h2>收银台</h2></div>
+            <!-- 支付中心内容 -->
+            <div class="msg-success">
+                <i class="icon">%</i><span class="msg-cont">您的支付单号[ {{bill}} ]创建成功，请尽快支付</span>
+            </div>
+            <form target="_blank" id="paycenter_form" class="content" method="post" action="{{url.pay}}">
+                <div class="payment-main" id="complete_main">
+                    <table class="order-info">
+                        <colgroup>
+                            <col class="col-1">
+                            <col class="col-2">
+                        </colgroup>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <span class="span-section">
+                                        <b>订单号：</b>
+                                        {{each orders as item}}
+                                        {{item}}
+                                        {{/each}}
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><b>订单数量：</b>{{orders.length}}</td>
+                                <td align="right" rowspan="3">
+                                    <b>总金额：</b>
+                                    <b class="price update-current-amount">
+                                        ￥{{amount.toFixed(2)}}
+                                    </b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><b>抵扣积分：</b><input type="text" name="point" value=0 />［可用积分:{{memberPoint}},最大抵扣 ¥{{MaxPoint.toFixed(2)}} ］<button id="maxdk" >最大抵扣</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="payment-center" id="payment_center">
+                        <div class="payment-info">
+                            <input type="hidden" value="{{bill}}" name="bill">
+                            <input type="hidden" value="{{member_id}}" name="member_id">
+                            <ul>
+                                <li class="form-item">
+                                    <span class="form-label">
+                                        <i>请选择支付方式：</i>
+                                    </span>
+                                    <ol class="payment" style="float: left;">
+                                        <li class="icon"><input type="radio" name="pay" value="alipay" checked="checked"><i class="alipay" title="支付宝">支付宝</i></li>
+                                        <li class="icon"><input type="radio" name="pay" value="wxpay"><i class="weixin" title="微信扫一扫支付">微信扫一扫支付</i></li>
+                                        <li class="icon"><input type="radio" name="pay" value="chinapay"><i class="chinapay" title="银联在线支付ChinaPay">银联在线支付</i></li>
+                                        <li class="icon"><input type="radio" name="pay" value="jdpay"><i class="jdpay" title="京东支付">京东支付</i></li>
+                                        <li><input type="radio" name="pay" value="deposit"><span>预存款</span></li>
+                                    </ol>
+                                </li>
+                                <!-- 非货到付款或线下支付显示去付款 -->
+                                <li class="form-item">
+                                    <span class="form-act">
+                                        <button class="btn btn-import btn-big action-pay" id="paysubmit" type="submit"><span><span>去付款</span></span></button>
+                                    </span>
+                                </li>
+                                <!--预售信息判断-->
+                            </ul>
+                        </div>
+
+                    </div>
+                </div>
+            </form>
+            <div class="may-need">
+                您可能需要：
+                <a target="_blank" class="lnklike" href="/member-orders.html"><i>查看订单</i> <q class="icon">3</q></a>
+                <a target="_blank" class="lnklike" href="/article-help-l-1.html"><i>查看帮助</i> <q class="icon">3</q></a>
+                <a target="_blank" class="lnklike" href="{{url.cart}}"><i>继续购物</i> <q class="icon">3</q></a>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+	$('paysubmit').addEvent('click',function(e){
+		jQuery.Dialog({
+            hasMask: true,
+            hasClose: true,
+            hasBtn: true,
+            confirmValue: '成功',
+            confirm: function(){
+				//支付结束,跳转到支付结果页面
+				location.href='{{url.pay}}';
+			},
+            cancelValue: '失败',
+            title: '提示',
+            content: '支付完成'
+        });
+	});
+    $('maxdk').addEvent('click',function(e){
+        var maxpoint = {{MaxPoint*100}}
+        $$("input[name=point]").set("value",Math.min({{memberPoint}},maxpoint));
+        return false;
+    });
+</script>

@@ -1,0 +1,64 @@
+<form method="post" id="chgpwd">
+    <input type="hidden" value="{{key}}" name="key" id="key">
+    <input type="hidden" value="{{account}}" name="account" id="account">
+    <ul>
+        <li class="form-item">
+            <label class="form-label"><em class="warn">*</em>新密码：</label>
+            <span class="form-act">
+                <input type="password" placeholder="6-20个字符" id="pwd" name="pwd" class="x-input auto-password-check-handle">
+                <span class="validation-messagebox"></span>
+            </span>
+        </li>
+        <li class="form-item">
+            <label class="form-label"><em class="warn">*</em>确认新密码：</label>
+            <span class="form-act">
+                <input type="password" placeholder="再次输入新密码" id="pwd_c" name="pwd_c" class="x-input">
+                <span class="validation-messagebox"></span>
+            </span>
+        </li>
+        <li class="form-item-normal">
+            <span class="form-act">
+                <button class="btn btn-simple btn-big" type="submit">
+                    <span><span>确&#12288;定</span></span>
+                </button>
+            </span>
+        </li>
+    </ul>
+</form>
+<script>
+    jQuery("#chgpwd").submit(function () {
+        var key = jQuery("#key").val().trim();
+        var account = jQuery("#account").val().trim();
+        var pwd = jQuery("#pwd").val().trim();
+        var pwd_c = jQuery("#pwd_c").val().trim();
+        if (key.length < 1 || account.length < 1) {
+            alert("必要信息丢失,请刷新重试");
+            return false;
+        }
+        if(pwd.length < 6 || pwd.length > 20)
+        {
+            alert("密码长度在6-20位之间,请检查");
+            return false;
+        }
+        if (pwd !== pwd_c) {
+            alert("两次输入的密码不一致,请检查");
+            return false;
+        }
+        jQuery.ajax({
+            type: "post",
+            url: "/lostpwd/step4",
+            data: jQuery(this).serialize(),
+            dataType:"json",
+            success: function (data) {
+                if (data.succ) {
+                    jQuery(".step-3").removeClass("active");
+                    jQuery(".step-4").addClass("active");
+                    jQuery("#forgot_content").html(data.data);
+                } else {
+                    alert(data.msg); //错误
+                }
+            }
+        })
+        return false;
+    });
+</script>

@@ -1,0 +1,85 @@
+[#[.informations]#]
+<style>
+    .usernamepassword {
+        width: 200px !important;
+        padding-left: 10px !important;
+    }
+
+    .Signin .signupin-content .verify-input {
+        height: 30px;
+    }
+</style>
+<div class="clearfix">
+    <div class="header"><a href="{{url.hosts.main}}" title="hw123首页" class="logo"><img data-src="{{url.hosts.resources}}/public/images/da/49/9e/3f8413e1997f4e912dcb2e39d6a70eb3ac3d75ad.png?1431390653#w" /></a></div>
+    <div class="Signin">
+        <div class="Signin-main">
+            <div class="balloon"></div>
+            <div class="plane"></div>
+            <div id="page_signin" class="signupin-content signin">
+                <div class="notice"><a data-pjax=".informations" href="{{url.hosts.sso+url.register}}?redirectURL={{gotoURL}}" class="btn btn-simple">免费注册</a></div>
+                <form id="loginform" action="{{url.hosts.sso+url.login}}" method="post">
+                    <ul>
+                        <li class="form-item">
+                            <input type="hidden" name="redirectURL" value="{{gotoURL}}" />
+                            <label class="form-label">登录帐号：</label><span class="form-act">
+                                <div class="Input">
+                                    <div class="x-box xbox-1"></div>
+                                    <input type="text" data-caution="请填写登入帐号" vtype="required" name="username" placeholder="用户名/邮箱地址/手机号" class="x-input usernamepassword action-account-check" value="{{username}}" />
+                                </div>
+                            </span>
+                        </li>
+                        <li class="form-item">
+                            <label class="form-label">密码：</label><span class="form-act">
+                                <div class="Input">
+                                    <div class="x-box x-box-2"></div>
+                                    <input type="password" data-caution="请填写密码" onpaste="return false;" oncontextmenu="return false;" vtype="required" name="password" placeholder="填写密码" class="x-input usernamepassword" />
+                                </div>
+                            </span>
+                        </li>
+                        <li class="form-item action-verifycode">
+                            <label class="form-label">验证码：</label><span class="form-act">
+                                <input type="text" name="vcode" data-caution="请填写验证码" vtype="required&&alphaint" autocomplete="off" maxlength="4"  placeholder="填写验证码" class="x-input verify-input" /><img src="{{url.hosts.sso+url.vcodeimg}}" alt="验证码" title="点击更换验证码" style="margin-left: 5px;" class="verify-code auto-change-verify-handle" /><a id="vimgbtn" class="verify-code auto-change-verify-handle">换一个</a>
+                            </span>
+                        </li>
+                        <li class="form-item">
+                            <label class="form-label"></label><span class="form-act">
+                                <input type="checkbox" name="is_remember" checked="checked" class="x-check action-remember-account" />
+                                <label class="form-sub-label">记住帐号</label>
+                                <input type="checkbox" name="site_autologin" class="x-check action-auto-signin" />
+                                <label class="form-sub-label">两周内自动登录</label>
+                            </span>
+                        </li>
+                        <li class="form-item-normal">
+                            <liable class="form-label"></liable><span class="form-act">
+                                <a data-pjax=".informations" href="{{url.hosts.sso+url.lostpwd}}?redirectURL={{gotoURL}}" class="forget-password">忘记密码？</a>
+                                <button type="submit" rel="_request" class="btn btn-major btn-big"><span><span>登　录</span></span></button>
+                            </span>
+                        </li>
+                    </ul>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    Module = new Module('page', ['signin']);
+    var modname = 'page.signin';
+    function redirect(url) {
+        if (url) top.location.href = url;
+    }
+    Module.get(modname).getElement('button[type=submit]').store('_ajax_config', {
+        progress: function (rs) {
+            rs[rs.code == 0 ? "success" : "error"] = rs.msg;
+            if (rs.error) {
+                changeCode(Module.element(modname, 'img.auto-change-verify-handle'));
+                return top.Message.error(rs.error, function () {
+                    redirect(rs.redirect);
+                });
+            }
+            if (rs.success) return top.Message.success(rs.success + '<br><b>会员登入成功系统即将跳转</b>', function () {
+                redirect(rs.redirect);
+            });
+            redirect(rs.redirect);
+        }
+    });
+</script>
